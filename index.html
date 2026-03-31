@@ -3,107 +3,250 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calendário de Publicações</title>
+<title>Conteúdos Kaka Gomes</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9f9f7; color: #1a1a1a; min-height: 100vh; }
-  .app { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* ── HEADER ── */
+  .header { background: #0D1B2A; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .header-brand { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: .02em; }
+  .header-brand span { color: #a78bfa; }
+  .header-links { display: flex; gap: 12px; align-items: center; }
+  .header-links a { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #c4b5fd; text-decoration: none; border: 1px solid #3d2d6e; border-radius: 6px; padding: 5px 10px; transition: background .15s; }
+  .header-links a:hover { background: #1e1040; }
+  .header-links a svg { width: 13px; height: 13px; fill: currentColor; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid #e5e2db; background: #fff; padding: 0 2rem; }
+  .tab { padding: 14px 20px; font-size: 13px; font-weight: 500; color: #999; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .15s; }
+  .tab.active { color: #6C3FC5; border-bottom-color: #6C3FC5; }
+  .tab:hover:not(.active) { color: #555; }
+
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
+  .app { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+  /* ── CALENDAR ── */
   .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-  .cal-title { font-size: 20px; font-weight: 500; color: #1a1a1a; }
+  .cal-title { font-size: 18px; font-weight: 500; }
   .cal-nav { display: flex; align-items: center; gap: 8px; }
-  .cal-nav button { background: none; border: 1px solid #e0ddd6; border-radius: 8px; padding: 5px 12px; cursor: pointer; font-size: 13px; color: #4a4a4a; transition: background .1s; }
+  .cal-nav button { background: none; border: 1px solid #e0ddd6; border-radius: 8px; padding: 5px 12px; cursor: pointer; font-size: 13px; color: #4a4a4a; }
   .cal-nav button:hover { background: #f0ede8; }
-  .legend { display: flex; gap: 16px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #777; }
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot-agendar { background: #F59E0B; }
-  .dot-agendado { background: #3B82F6; }
-  .dot-publicado { background: #22C55E; }
+  .legend { display: flex; gap: 12px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #777; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .grid-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; margin-bottom: 1px; }
   .grid-header div { text-align: center; font-size: 11px; font-weight: 500; color: #999; padding: 6px 0; text-transform: uppercase; letter-spacing: .05em; }
   .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #e5e2db; border: 1px solid #e5e2db; border-radius: 12px; overflow: hidden; }
-  .day { background: #fff; min-height: 110px; padding: 6px 8px; cursor: pointer; position: relative; transition: background .1s; }
+  .day { background: #fff; min-height: 110px; padding: 6px 7px; cursor: pointer; position: relative; }
   .day:hover { background: #f7f5f0; }
   .day.other-month { background: #f9f9f7; }
   .day.other-month .day-num { color: #ccc; }
-  .day-num { font-size: 13px; font-weight: 500; color: #aaa; display: flex; align-items: center; justify-content: flex-end; margin-bottom: 4px; }
-  .day-num.today-num { background: #E24B4A; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-left: auto; }
-  .post-card { border-radius: 4px; padding: 3px 6px; font-size: 11px; line-height: 1.35; margin-bottom: 3px; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-  .post-card.agendar  { background: #FEF3C7; color: #92400E; border-left: 2.5px solid #F59E0B; }
-  .post-card.agendado { background: #DBEAFE; color: #1E40AF; border-left: 2.5px solid #3B82F6; }
-  .post-card.publicado{ background: #DCFCE7; color: #14532D; border-left: 2.5px solid #22C55E; }
-  .add-btn { position: absolute; bottom: 6px; right: 6px; width: 20px; height: 20px; border-radius: 50%; border: 1px solid #e0ddd6; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #aaa; cursor: pointer; opacity: 0; transition: opacity .1s; line-height: 1; }
+  .day-num { font-size: 12px; font-weight: 500; color: #aaa; display: flex; justify-content: flex-end; margin-bottom: 3px; }
+  .day-num.today-num { background: #E24B4A; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; margin-left: auto; }
+  .post-card { border-radius: 4px; padding: 2px 5px; font-size: 10px; line-height: 1.4; margin-bottom: 2px; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .post-card .card-fmt { font-size: 9px; opacity: .75; }
+
+  .s-planejamento { background: #F3F4F6; color: #374151; border-left: 2.5px solid #9CA3AF; }
+  .s-design       { background: #EDE9FE; color: #5B21B6; border-left: 2.5px solid #7C3AED; }
+  .s-em-gravacao  { background: #FEF3C7; color: #92400E; border-left: 2.5px solid #F59E0B; }
+  .s-gravado      { background: #FEE2E2; color: #991B1B; border-left: 2.5px solid #EF4444; }
+  .s-editando     { background: #FFEDD5; color: #9A3412; border-left: 2.5px solid #F97316; }
+  .s-aprovacao    { background: #E0F2FE; color: #075985; border-left: 2.5px solid #0EA5E9; }
+  .s-aprovado     { background: #DBEAFE; color: #1E40AF; border-left: 2.5px solid #3B82F6; }
+  .s-agendar      { background: #FEF9C3; color: #854D0E; border-left: 2.5px solid #EAB308; }
+  .s-agendado     { background: #D1FAE5; color: #065F46; border-left: 2.5px solid #10B981; }
+  .s-postado      { background: #DCFCE7; color: #14532D; border-left: 2.5px solid #22C55E; }
+
+  .add-btn { position: absolute; bottom: 5px; right: 5px; width: 18px; height: 18px; border-radius: 50%; border: 1px solid #e0ddd6; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #aaa; cursor: pointer; opacity: 0; line-height: 1; }
   .day:hover .add-btn { opacity: 1; }
-  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.3); display: flex; align-items: center; justify-content: center; z-index: 100; }
-  .modal { background: #fff; border-radius: 12px; border: 1px solid #e0ddd6; padding: 1.5rem; width: 340px; max-width: 95vw; box-shadow: 0 8px 32px rgba(0,0,0,.12); }
-  .modal h3 { font-size: 15px; font-weight: 500; margin-bottom: 1rem; color: #1a1a1a; }
-  .modal label { font-size: 12px; color: #777; display: block; margin-bottom: 4px; margin-top: 12px; }
+  .status-bar { font-size: 11px; color: #aaa; text-align: center; padding: 6px 0 0; min-height: 18px; }
+  .status-bar.erro { color: #E24B4A; }
+
+  /* ── IDEAS ── */
+  .ideas-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .ideas-toolbar h2 { font-size: 16px; font-weight: 500; flex: 1; }
+  .btn-add-idea { background: #6C3FC5; color: #fff; border: none; border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }
+  .btn-add-idea:hover { opacity: .88; }
+  .ideas-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media(max-width:700px){ .ideas-sections { grid-template-columns: 1fr; } }
+  .ideas-box { background: #fff; border: 1px solid #e5e2db; border-radius: 12px; overflow: hidden; }
+  .ideas-box-header { padding: 12px 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0ede8; }
+  .ideas-box-header.nao-utilizado { color: #6C3FC5; background: #faf8ff; }
+  .ideas-box-header.utilizado { color: #059669; background: #f0fdf4; }
+  .idea-count { font-size: 11px; font-weight: 400; background: #e5e2db; border-radius: 20px; padding: 2px 8px; color: #666; }
+  .ideas-list { padding: 8px; min-height: 80px; }
+  .idea-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; cursor: pointer; border: 1px solid #f0ede8; margin-bottom: 6px; transition: background .1s; background: #fff; }
+  .idea-item:hover { background: #faf8ff; }
+  .idea-item.used { opacity: .55; }
+  .idea-info { flex: 1; min-width: 0; }
+  .idea-tema { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .idea-status-badge { font-size: 10px; font-weight: 600; border-radius: 4px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0; }
+  .idea-link-icon { font-size: 14px; color: #9CA3AF; flex-shrink: 0; text-decoration: none; }
+  .idea-link-icon:hover { color: #6C3FC5; }
+  .ideas-empty { text-align: center; color: #bbb; font-size: 13px; padding: 2rem 1rem; }
+
+  /* ── MODAL ── */
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; z-index: 200; }
+  .modal { background: #fff; border-radius: 14px; border: 1px solid #e0ddd6; padding: 1.5rem; width: 400px; max-width: 95vw; box-shadow: 0 8px 40px rgba(0,0,0,.14); max-height: 90vh; overflow-y: auto; }
+  .modal h3 { font-size: 15px; font-weight: 600; margin-bottom: 1rem; }
+  .modal label { font-size: 11px; color: #777; display: block; margin-bottom: 3px; margin-top: 12px; text-transform: uppercase; letter-spacing: .04em; }
   .modal input, .modal select, .modal textarea { width: 100%; font-size: 13px; padding: 7px 10px; border: 1px solid #e0ddd6; border-radius: 8px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; transition: border .15s; }
   .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: #6C3FC5; }
-  .modal textarea { height: 70px; resize: vertical; }
+  .modal textarea { resize: vertical; }
+  .modal textarea.tall { height: 90px; }
   .modal-actions { display: flex; gap: 8px; margin-top: 1.25rem; justify-content: flex-end; align-items: center; }
-  .modal-actions button { font-size: 13px; padding: 7px 16px; border-radius: 8px; cursor: pointer; font-family: inherit; transition: opacity .1s; }
-  .btn-cancel  { background: none; border: 1px solid #e0ddd6; color: #777; }
+  .modal-actions button { font-size: 13px; padding: 7px 16px; border-radius: 8px; cursor: pointer; font-family: inherit; }
+  .btn-cancel { background: none; border: 1px solid #e0ddd6; color: #777; }
   .btn-cancel:hover { background: #f7f5f0; }
-  .btn-save    { background: #6C3FC5; border: none; color: #fff; }
+  .btn-save { background: #6C3FC5; border: none; color: #fff; }
   .btn-save:hover { opacity: .88; }
-  .btn-delete  { background: none; border: 1px solid #E24B4A; color: #E24B4A; margin-right: auto; }
+  .btn-delete { background: none; border: 1px solid #E24B4A; color: #E24B4A; margin-right: auto; }
   .btn-delete:hover { background: #fff0f0; }
-  .status-bar { font-size: 12px; color: #aaa; text-align: center; padding: 6px 0 0; min-height: 20px; }
-  .status-bar.erro { color: #E24B4A; }
+  .btn-mark-used { background: none; border: 1px solid #10B981; color: #065F46; margin-right: auto; font-size: 12px; }
+  .btn-mark-used:hover { background: #f0fdf4; }
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="cal-header">
-    <span class="cal-title" id="cal-title"></span>
-    <div class="cal-nav">
-      <button onclick="changeMonth(-1)">&#8249;</button>
-      <button onclick="goToday()">Hoje</button>
-      <button onclick="changeMonth(1)">&#8250;</button>
-    </div>
+
+<div class="header">
+  <div class="header-brand">Kaka <span>Gomes</span> · Conteúdo</div>
+  <div class="header-links">
+    <a href="https://drive.google.com/drive/folders/1jzTlKA04myKAu-4gnGhWMcmBEgC28ooI?usp=sharing" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M6.6 2L2 10l4.4 7.6h11.2L22 10 17.6 2H6.6zm.8 1.6h9.2l3.6 6.2-3.6 6.2H7.4L3.8 9.8l3.6-6.2zM8.5 9l3.5 6 3.5-6H8.5z"/></svg>
+      Drive
+    </a>
+    <a href="https://www.instagram.com/chefkakagomes/" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      @chefkakagomes
+    </a>
   </div>
-  <div class="legend">
-    <div class="legend-item"><div class="dot dot-agendar"></div>Agendar</div>
-    <div class="legend-item"><div class="dot dot-agendado"></div>Agendado</div>
-    <div class="legend-item"><div class="dot dot-publicado"></div>Publicado</div>
-  </div>
-  <div class="grid-header">
-    <div>dom</div><div>seg</div><div>ter</div><div>qua</div><div>qui</div><div>sex</div><div>sáb</div>
-  </div>
-  <div class="grid" id="cal-grid"></div>
-  <div class="status-bar" id="status-bar">Conectando...</div>
 </div>
 
-<div class="modal-bg" id="modal" style="display:none">
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('calendar')">📅 Calendário</div>
+  <div class="tab" onclick="switchTab('ideas')">💡 Banco de Ideias</div>
+</div>
+
+<div class="page active" id="page-calendar">
+  <div class="app">
+    <div class="cal-header">
+      <span class="cal-title" id="cal-title"></span>
+      <div class="cal-nav">
+        <button onclick="changeMonth(-1)">&#8249;</button>
+        <button onclick="goToday()">Hoje</button>
+        <button onclick="changeMonth(1)">&#8250;</button>
+      </div>
+    </div>
+    <div class="legend" id="cal-legend"></div>
+    <div class="grid-header">
+      <div>dom</div><div>seg</div><div>ter</div><div>qua</div><div>qui</div><div>sex</div><div>sáb</div>
+    </div>
+    <div class="grid" id="cal-grid"></div>
+    <div class="status-bar" id="status-bar">Conectando...</div>
+  </div>
+</div>
+
+<div class="page" id="page-ideas">
+  <div class="app">
+    <div class="ideas-toolbar">
+      <h2>Banco de Ideias</h2>
+      <button class="btn-add-idea" onclick="openIdeaNew()">+ Nova ideia</button>
+    </div>
+    <div class="ideas-sections">
+      <div class="ideas-box">
+        <div class="ideas-box-header nao-utilizado">
+          Não utilizadas
+          <span class="idea-count" id="count-unused">0</span>
+        </div>
+        <div class="ideas-list" id="list-unused"></div>
+      </div>
+      <div class="ideas-box">
+        <div class="ideas-box-header utilizado">
+          Utilizadas / Publicadas
+          <span class="idea-count" id="count-used">0</span>
+        </div>
+        <div class="ideas-list" id="list-used"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: POST -->
+<div class="modal-bg" id="modal-post" style="display:none">
   <div class="modal">
-    <h3 id="modal-title">Novo post</h3>
-    <label>Tema</label>
-    <textarea id="m-tema" placeholder="Sobre o que é esse post?"></textarea>
+    <h3 id="mp-title">Novo post</h3>
+    <label>Tema / Título</label>
+    <input type="text" id="mp-tema" placeholder="Ex: 3 erros que destroem seu alcance">
     <label>Status</label>
-    <select id="m-status">
-      <option value="agendar">Agendar</option>
-      <option value="agendado">Agendado</option>
-      <option value="publicado">Publicado</option>
+    <select id="mp-status">
+      <option value="s-planejamento">PLANEJAMENTO</option>
+      <option value="s-design">DESIGN</option>
+      <option value="s-em-gravacao">EM GRAVAÇÃO</option>
+      <option value="s-gravado">GRAVADO</option>
+      <option value="s-editando">EDITANDO</option>
+      <option value="s-aprovacao">APROVAÇÃO KAKA</option>
+      <option value="s-aprovado">APROVADO</option>
+      <option value="s-agendar">AGENDAR</option>
+      <option value="s-agendado">AGENDADO</option>
+      <option value="s-postado">POSTADO</option>
     </select>
     <label>Formato</label>
-    <select id="m-formato">
+    <select id="mp-formato">
       <option>Reels</option>
       <option>Carrossel</option>
       <option>Feed (estático)</option>
       <option>Story</option>
     </select>
+    <label>Música do Post</label>
+    <input type="text" id="mp-musica" placeholder="Ex: Beyoncé - Texas Hold Em">
+    <label>Legenda</label>
+    <textarea class="tall" id="mp-legenda" placeholder="Cole aqui a legenda do post..."></textarea>
+    <label>Link Canva / Drive</label>
+    <input type="url" id="mp-link" placeholder="https://...">
     <div class="modal-actions">
-      <button class="btn-delete" id="btn-delete" onclick="deletePost()" style="display:none">Excluir</button>
-      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-delete" id="mp-btn-delete" onclick="deletePost()" style="display:none">Excluir</button>
+      <button class="btn-cancel" onclick="closeModal('modal-post')">Cancelar</button>
       <button class="btn-save" onclick="savePost()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: IDEA -->
+<div class="modal-bg" id="modal-idea" style="display:none">
+  <div class="modal">
+    <h3 id="mi-title">Nova ideia</h3>
+    <label>Tema / Título</label>
+    <input type="text" id="mi-tema" placeholder="Ex: Como criar conteúdo sem aparecer">
+    <label>Status</label>
+    <select id="mi-status">
+      <option value="s-planejamento">PLANEJAMENTO</option>
+      <option value="s-design">DESIGN</option>
+      <option value="s-em-gravacao">EM GRAVAÇÃO</option>
+      <option value="s-gravado">GRAVADO</option>
+      <option value="s-editando">EDITANDO</option>
+      <option value="s-aprovacao">APROVAÇÃO KAKA</option>
+      <option value="s-aprovado">APROVADO</option>
+      <option value="s-agendar">AGENDAR</option>
+      <option value="s-agendado">AGENDADO</option>
+      <option value="s-postado">POSTADO</option>
+    </select>
+    <label>Link do Design (Canva / Drive)</label>
+    <input type="url" id="mi-link" placeholder="https://canva.com/...">
+    <div class="modal-actions">
+      <button class="btn-delete" id="mi-btn-delete" onclick="deleteIdea()" style="display:none">Excluir</button>
+      <button class="btn-mark-used" id="mi-btn-used" onclick="toggleIdeaUsed()" style="display:none">Marcar como utilizada</button>
+      <button class="btn-cancel" onclick="closeModal('modal-idea')">Cancelar</button>
+      <button class="btn-save" onclick="saveIdea()">Salvar</button>
     </div>
   </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-  import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+  import { getDatabase, ref, onValue, set, remove, update } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCxKRXanh6CdkDyOk0WC5a6l-Z20770mS0",
@@ -117,160 +260,272 @@
 
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
-  const postsRef = ref(db, 'posts');
+
+  const STATUS_LABEL = {
+    's-planejamento': 'PLANEJAMENTO',
+    's-design':       'DESIGN',
+    's-em-gravacao':  'EM GRAVAÇÃO',
+    's-gravado':      'GRAVADO',
+    's-editando':     'EDITANDO',
+    's-aprovacao':    'APROVAÇÃO KAKA',
+    's-aprovado':     'APROVADO',
+    's-agendar':      'AGENDAR',
+    's-agendado':     'AGENDADO',
+    's-postado':      'POSTADO',
+  };
+  const STATUS_COLORS = {
+    's-planejamento': '#9CA3AF',
+    's-design':       '#7C3AED',
+    's-em-gravacao':  '#F59E0B',
+    's-gravado':      '#EF4444',
+    's-editando':     '#F97316',
+    's-aprovacao':    '#0EA5E9',
+    's-aprovado':     '#3B82F6',
+    's-agendar':      '#EAB308',
+    's-agendado':     '#10B981',
+    's-postado':      '#22C55E',
+  };
+
+  const legendEl = document.getElementById('cal-legend');
+  Object.entries(STATUS_LABEL).forEach(([k, v]) => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="dot" style="background:${STATUS_COLORS[k]}"></div>${v}`;
+    legendEl.appendChild(item);
+  });
 
   let posts = {};
   let cur = new Date();
-  let editing = null;
-  let editDay = null;
+  let editingPost = null;
+  let editDayKey = null;
 
-  const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const postsRef = ref(db, 'posts');
+  onValue(postsRef, (snap) => {
+    posts = snap.val() || {};
+    renderCal();
+    setStatus('✓ Sincronizado');
+    setTimeout(() => setStatus(''), 2000);
+  }, () => setStatus('Erro ao conectar.', true));
 
-  function setStatus(msg, erro = false) {
+  function setStatus(msg, erro=false) {
     const el = document.getElementById('status-bar');
     el.textContent = msg;
     el.className = 'status-bar' + (erro ? ' erro' : '');
   }
 
-  function key(y, m, d) {
+  function dayKey(y,m,d) {
     return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
   }
 
-  onValue(postsRef, (snapshot) => {
-    posts = snapshot.val() || {};
-    render();
-    setStatus('✓ Sincronizado');
-    setTimeout(() => setStatus(''), 2000);
-  }, () => {
-    setStatus('Erro ao conectar. Verifique as regras do banco.', true);
-  });
-
-  function render() {
+  function renderCal() {
     const y = cur.getFullYear(), m = cur.getMonth();
+    const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
     document.getElementById('cal-title').textContent = `${meses[m]} de ${y}`;
     const grid = document.getElementById('cal-grid');
     grid.innerHTML = '';
-    const first = new Date(y, m, 1).getDay();
-    const daysInMonth = new Date(y, m+1, 0).getDate();
-    const daysInPrev  = new Date(y, m, 0).getDate();
+    const first = new Date(y,m,1).getDay();
+    const dim = new Date(y,m+1,0).getDate();
+    const dip = new Date(y,m,0).getDate();
     const today = new Date();
-    const totalCells = Math.ceil((first + daysInMonth) / 7) * 7;
+    const total = Math.ceil((first+dim)/7)*7;
 
-    for (let i = 0; i < totalCells; i++) {
+    for(let i=0;i<total;i++){
       const div = document.createElement('div');
-      div.className = 'day';
-      let dayNum, isOther = false, dateObj;
-      if (i < first) {
-        dayNum = daysInPrev - first + 1 + i; isOther = true;
-        dateObj = new Date(y, m-1, dayNum);
-      } else if (i >= first + daysInMonth) {
-        dayNum = i - first - daysInMonth + 1; isOther = true;
-        dateObj = new Date(y, m+1, dayNum);
-      } else {
-        dayNum = i - first + 1;
-        dateObj = new Date(y, m, dayNum);
-      }
-      if (isOther) div.classList.add('other-month');
+      div.className='day';
+      let dn, other=false, dateObj;
+      if(i<first){ dn=dip-first+1+i; other=true; dateObj=new Date(y,m-1,dn); }
+      else if(i>=first+dim){ dn=i-first-dim+1; other=true; dateObj=new Date(y,m+1,dn); }
+      else{ dn=i-first+1; dateObj=new Date(y,m,dn); }
+      if(other) div.classList.add('other-month');
 
-      const isT = dateObj.toDateString() === today.toDateString();
-      const numSpan = document.createElement('div');
-      numSpan.className = 'day-num' + (isT ? ' today-num' : '');
-      numSpan.textContent = dayNum;
-      div.appendChild(numSpan);
+      const isT = dateObj.toDateString()===today.toDateString();
+      const ns = document.createElement('div');
+      ns.className='day-num'+(isT?' today-num':'');
+      ns.textContent=dn;
+      div.appendChild(ns);
 
-      const k = key(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
-      const dayPosts = posts[k];
-      if (dayPosts) {
-        Object.entries(dayPosts).forEach(([id, p]) => {
-          const card = document.createElement('div');
-          card.className = `post-card ${p.status}`;
-          card.textContent = p.tema || '(sem tema)';
-          card.title = p.tema;
-          card.onclick = (e) => { e.stopPropagation(); openEdit(k, id, p); };
+      const k = dayKey(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+      const dp = posts[k];
+      if(dp){
+        Object.entries(dp).forEach(([id,p])=>{
+          const card=document.createElement('div');
+          card.className=`post-card ${p.status||'s-planejamento'}`;
+          card.innerHTML=`<div>${p.tema||'(sem tema)'}</div><div class="card-fmt">${STATUS_LABEL[p.status]||''} · ${p.formato||''}</div>`;
+          card.title=p.tema;
+          card.onclick=(e)=>{e.stopPropagation();openPostEdit(k,id,p);};
           div.appendChild(card);
         });
       }
 
-      const add = document.createElement('div');
-      add.className = 'add-btn';
-      add.textContent = '+';
-      add.onclick = (e) => { e.stopPropagation(); openNew(k, dateObj); };
+      const add=document.createElement('div');
+      add.className='add-btn'; add.textContent='+';
+      add.onclick=(e)=>{e.stopPropagation();openPostNew(k,dateObj);};
       div.appendChild(add);
-      div.onclick = () => openNew(k, dateObj);
+      div.onclick=()=>openPostNew(k,dateObj);
       grid.appendChild(div);
     }
   }
 
-  function openNew(k, d) {
-    editing = null; editDay = k;
-    document.getElementById('modal-title').textContent =
-      `Novo post — ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-    document.getElementById('m-tema').value = '';
-    document.getElementById('m-status').value = 'agendar';
-    document.getElementById('m-formato').value = 'Reels';
-    document.getElementById('btn-delete').style.display = 'none';
-    document.getElementById('modal').style.display = 'flex';
-    setTimeout(() => document.getElementById('m-tema').focus(), 50);
+  function openPostNew(k, d) {
+    editingPost=null; editDayKey=k;
+    document.getElementById('mp-title').textContent=`Novo post — ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+    document.getElementById('mp-tema').value='';
+    document.getElementById('mp-status').value='s-planejamento';
+    document.getElementById('mp-formato').value='Reels';
+    document.getElementById('mp-musica').value='';
+    document.getElementById('mp-legenda').value='';
+    document.getElementById('mp-link').value='';
+    document.getElementById('mp-btn-delete').style.display='none';
+    document.getElementById('modal-post').style.display='flex';
+    setTimeout(()=>document.getElementById('mp-tema').focus(),50);
   }
 
-  function openEdit(k, id, p) {
-    editing = id; editDay = k;
-    const parts = k.split('-');
-    document.getElementById('modal-title').textContent =
-      `Editar post — ${parts[2]}/${parts[1]}/${parts[0]}`;
-    document.getElementById('m-tema').value = p.tema;
-    document.getElementById('m-status').value = p.status;
-    document.getElementById('m-formato').value = p.formato;
-    document.getElementById('btn-delete').style.display = 'block';
-    document.getElementById('modal').style.display = 'flex';
+  function openPostEdit(k,id,p) {
+    editingPost=id; editDayKey=k;
+    const parts=k.split('-');
+    document.getElementById('mp-title').textContent=`Editar post — ${parts[2]}/${parts[1]}/${parts[0]}`;
+    document.getElementById('mp-tema').value=p.tema||'';
+    document.getElementById('mp-status').value=p.status||'s-planejamento';
+    document.getElementById('mp-formato').value=p.formato||'Reels';
+    document.getElementById('mp-musica').value=p.musica||'';
+    document.getElementById('mp-legenda').value=p.legenda||'';
+    document.getElementById('mp-link').value=p.link||'';
+    document.getElementById('mp-btn-delete').style.display='block';
+    document.getElementById('modal-post').style.display='flex';
   }
 
   async function savePost() {
-    const p = {
-      tema:    document.getElementById('m-tema').value,
-      status:  document.getElementById('m-status').value,
-      formato: document.getElementById('m-formato').value
+    const p={
+      tema:    document.getElementById('mp-tema').value,
+      status:  document.getElementById('mp-status').value,
+      formato: document.getElementById('mp-formato').value,
+      musica:  document.getElementById('mp-musica').value,
+      legenda: document.getElementById('mp-legenda').value,
+      link:    document.getElementById('mp-link').value,
     };
-    const id = editing || Date.now().toString();
-    try {
-      await set(ref(db, `posts/${editDay}/${id}`), p);
-      closeModal();
-    } catch(e) {
-      setStatus('Erro ao salvar. Verifique as regras do banco.', true);
-    }
+    const id=editingPost||Date.now().toString();
+    try{ await set(ref(db,`posts/${editDayKey}/${id}`),p); closeModal('modal-post'); }
+    catch(e){ setStatus('Erro ao salvar.',true); }
   }
 
   async function deletePost() {
-    try {
-      await remove(ref(db, `posts/${editDay}/${editing}`));
-      closeModal();
-    } catch(e) {
-      setStatus('Erro ao excluir.', true);
+    try{ await remove(ref(db,`posts/${editDayKey}/${editingPost}`)); closeModal('modal-post'); }
+    catch(e){ setStatus('Erro ao excluir.',true); }
+  }
+
+  let ideas = {};
+  let editingIdea = null;
+
+  const ideasRef = ref(db,'ideas');
+  onValue(ideasRef,(snap)=>{
+    ideas=snap.val()||{};
+    renderIdeas();
+  });
+
+  function renderIdeas() {
+    const unused=document.getElementById('list-unused');
+    const used=document.getElementById('list-used');
+    unused.innerHTML=''; used.innerHTML='';
+    let cu=0, cl=0;
+    Object.entries(ideas).sort((a,b)=>b[0]-a[0]).forEach(([id,idea])=>{
+      const el=buildIdeaEl(id,idea);
+      if(idea.used){ used.appendChild(el); cl++; }
+      else{ unused.appendChild(el); cu++; }
+    });
+    if(cu===0) unused.innerHTML='<div class="ideas-empty">Nenhuma ideia ainda</div>';
+    if(cl===0) used.innerHTML='<div class="ideas-empty">Nenhuma ideia utilizada</div>';
+    document.getElementById('count-unused').textContent=cu;
+    document.getElementById('count-used').textContent=cl;
+  }
+
+  function buildIdeaEl(id,idea) {
+    const div=document.createElement('div');
+    div.className='idea-item'+(idea.used?' used':'');
+    const statusColor=STATUS_COLORS[idea.status]||'#9CA3AF';
+    const statusLabel=STATUS_LABEL[idea.status]||'';
+    div.innerHTML=`
+      <div class="idea-info"><div class="idea-tema">${idea.tema||'(sem título)'}</div></div>
+      <span class="idea-status-badge" style="background:${statusColor}22;color:${statusColor}">${statusLabel}</span>
+      ${idea.link?`<a class="idea-link-icon" href="${idea.link}" target="_blank" onclick="event.stopPropagation()">🔗</a>`:''}
+    `;
+    div.onclick=()=>openIdeaEdit(id,idea);
+    return div;
+  }
+
+  function openIdeaNew() {
+    editingIdea=null;
+    document.getElementById('mi-title').textContent='Nova ideia';
+    document.getElementById('mi-tema').value='';
+    document.getElementById('mi-status').value='s-planejamento';
+    document.getElementById('mi-link').value='';
+    document.getElementById('mi-btn-delete').style.display='none';
+    document.getElementById('mi-btn-used').style.display='none';
+    document.getElementById('modal-idea').style.display='flex';
+    setTimeout(()=>document.getElementById('mi-tema').focus(),50);
+  }
+
+  function openIdeaEdit(id,idea) {
+    editingIdea=id;
+    document.getElementById('mi-title').textContent='Editar ideia';
+    document.getElementById('mi-tema').value=idea.tema||'';
+    document.getElementById('mi-status').value=idea.status||'s-planejamento';
+    document.getElementById('mi-link').value=idea.link||'';
+    document.getElementById('mi-btn-delete').style.display='block';
+    const usedBtn=document.getElementById('mi-btn-used');
+    usedBtn.style.display='block';
+    usedBtn.textContent=idea.used?'Mover para não utilizada':'Marcar como utilizada';
+    document.getElementById('modal-idea').style.display='flex';
+  }
+
+  async function saveIdea() {
+    const idea={
+      tema:   document.getElementById('mi-tema').value,
+      status: document.getElementById('mi-status').value,
+      link:   document.getElementById('mi-link').value,
+      used:   editingIdea ? (ideas[editingIdea]?.used||false) : false,
+    };
+    const id=editingIdea||Date.now().toString();
+    try{ await set(ref(db,`ideas/${id}`),idea); closeModal('modal-idea'); }
+    catch(e){ alert('Erro ao salvar.'); }
+  }
+
+  async function toggleIdeaUsed() {
+    const current=ideas[editingIdea]?.used||false;
+    try{ await update(ref(db,`ideas/${editingIdea}`),{used:!current}); closeModal('modal-idea'); }
+    catch(e){ alert('Erro.'); }
+  }
+
+  async function deleteIdea() {
+    try{ await remove(ref(db,`ideas/${editingIdea}`)); closeModal('modal-idea'); }
+    catch(e){ alert('Erro ao excluir.'); }
+  }
+
+  function closeModal(id) { document.getElementById(id).style.display='none'; }
+  function changeMonth(d){ cur=new Date(cur.getFullYear(),cur.getMonth()+d,1); renderCal(); }
+  function goToday(){ cur=new Date(); renderCal(); }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    if(tab==='calendar'){
+      document.querySelectorAll('.tab')[0].classList.add('active');
+      document.getElementById('page-calendar').classList.add('active');
+    } else {
+      document.querySelectorAll('.tab')[1].classList.add('active');
+      document.getElementById('page-ideas').classList.add('active');
     }
   }
 
-  function closeModal() {
-    document.getElementById('modal').style.display = 'none';
-    editing = null; editDay = null;
-  }
-
-  function changeMonth(d) {
-    cur = new Date(cur.getFullYear(), cur.getMonth() + d, 1);
-    render();
-  }
-
-  function goToday() { cur = new Date(); render(); }
-
-  document.getElementById('modal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
+  [document.getElementById('modal-post'), document.getElementById('modal-idea')].forEach(m=>{
+    m.addEventListener('click',function(e){ if(e.target===this) closeModal(this.id); });
   });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal('modal-post'); closeModal('modal-idea'); }});
 
-  window.savePost    = savePost;
-  window.deletePost  = deletePost;
-  window.closeModal  = closeModal;
-  window.changeMonth = changeMonth;
-  window.goToday     = goToday;
+  window.changeMonth=changeMonth; window.goToday=goToday;
+  window.savePost=savePost; window.deletePost=deletePost;
+  window.saveIdea=saveIdea; window.deleteIdea=deleteIdea;
+  window.toggleIdeaUsed=toggleIdeaUsed; window.openIdeaNew=openIdeaNew;
+  window.switchTab=switchTab; window.closeModal=closeModal;
 </script>
 </body>
 </html>
