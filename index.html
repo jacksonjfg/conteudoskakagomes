@@ -9,66 +9,63 @@
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9f9f7; color: #1a1a1a; min-height: 100vh; }
 
   /* ── HEADER ── */
-  .header { background: #0D1B2A; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px; }
-  .header-brand { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: .02em; }
+  .header { background: #0D1B2A; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; flex-wrap: wrap; }
+  .header-brand { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: .02em; white-space: nowrap; }
   .header-brand span { color: #a78bfa; }
-  .header-links { display: flex; gap: 12px; align-items: center; }
-  .header-links a { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #c4b5fd; text-decoration: none; border: 1px solid #3d2d6e; border-radius: 6px; padding: 5px 10px; transition: background .15s; }
+  .header-center { display: flex; gap: 8px; }
+  .header-tab { padding: 8px 18px; font-size: 13px; font-weight: 600; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all .15s; color: #c4b5fd; background: transparent; white-space: nowrap; }
+  .header-tab.active { background: #6C3FC5; color: #fff; border-color: #6C3FC5; }
+  .header-tab:not(.active):hover { background: #1e1040; border-color: #3d2d6e; }
+  .header-links { display: flex; gap: 10px; align-items: center; }
+  .header-links a { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #c4b5fd; text-decoration: none; border: 1px solid #3d2d6e; border-radius: 6px; padding: 5px 10px; transition: background .15s; white-space: nowrap; }
   .header-links a:hover { background: #1e1040; }
-  .header-links a svg { width: 13px; height: 13px; fill: currentColor; }
-
-  /* ── TABS ── */
-  .tabs { display: flex; gap: 0; border-bottom: 1px solid #e5e2db; background: #fff; padding: 0 2rem; }
-  .tab { padding: 14px 20px; font-size: 13px; font-weight: 500; color: #999; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .15s; }
-  .tab.active { color: #6C3FC5; border-bottom-color: #6C3FC5; }
-  .tab:hover:not(.active) { color: #555; }
+  .header-links a svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
 
   /* ── PAGES ── */
   .page { display: none; }
   .page.active { display: block; }
-  .app { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+  .app { max-width: 1140px; margin: 0 auto; padding: 1.25rem 1.5rem; }
 
   /* ── CALENDAR ── */
-  .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-  .cal-title { font-size: 18px; font-weight: 500; }
+  .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .cal-title { font-size: 17px; font-weight: 500; }
   .cal-nav { display: flex; align-items: center; gap: 8px; }
   .cal-nav button { background: none; border: 1px solid #e0ddd6; border-radius: 8px; padding: 5px 12px; cursor: pointer; font-size: 13px; color: #4a4a4a; }
   .cal-nav button:hover { background: #f0ede8; }
-  .legend { display: flex; gap: 12px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+  .legend { display: flex; gap: 14px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #777; }
   .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .grid-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; margin-bottom: 1px; }
-  .grid-header div { text-align: center; font-size: 11px; font-weight: 500; color: #999; padding: 6px 0; text-transform: uppercase; letter-spacing: .05em; }
+  .grid-header div { text-align: center; font-size: 11px; font-weight: 500; color: #999; padding: 5px 0; text-transform: uppercase; letter-spacing: .05em; }
   .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #e5e2db; border: 1px solid #e5e2db; border-radius: 12px; overflow: hidden; }
-  .day { background: #fff; min-height: 110px; padding: 6px 7px; cursor: pointer; position: relative; }
+
+  .day { background: #fff; height: 130px; padding: 5px 6px; cursor: pointer; position: relative; overflow: hidden; display: flex; flex-direction: column; }
   .day:hover { background: #f7f5f0; }
   .day.other-month { background: #f9f9f7; }
   .day.other-month .day-num { color: #ccc; }
-  .day-num { font-size: 12px; font-weight: 500; color: #aaa; display: flex; justify-content: flex-end; margin-bottom: 3px; }
+  .day.drag-over { background: #ede9fe !important; outline: 2px dashed #6C3FC5; outline-offset: -2px; }
+  .day-num { font-size: 12px; font-weight: 500; color: #aaa; display: flex; justify-content: flex-end; margin-bottom: 3px; flex-shrink: 0; }
   .day-num.today-num { background: #E24B4A; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; margin-left: auto; }
-  .post-card { border-radius: 4px; padding: 2px 5px; font-size: 10px; line-height: 1.4; margin-bottom: 2px; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-  .post-card .card-fmt { font-size: 9px; opacity: .75; }
+  .day-posts { flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 2px; }
 
-  .s-planejamento { background: #F3F4F6; color: #374151; border-left: 2.5px solid #9CA3AF; }
-  .s-design       { background: #EDE9FE; color: #5B21B6; border-left: 2.5px solid #7C3AED; }
-  .s-em-gravacao  { background: #FEF3C7; color: #92400E; border-left: 2.5px solid #F59E0B; }
-  .s-gravado      { background: #FEE2E2; color: #991B1B; border-left: 2.5px solid #EF4444; }
-  .s-editando     { background: #FFEDD5; color: #9A3412; border-left: 2.5px solid #F97316; }
-  .s-aprovacao    { background: #E0F2FE; color: #075985; border-left: 2.5px solid #0EA5E9; }
-  .s-aprovado     { background: #DBEAFE; color: #1E40AF; border-left: 2.5px solid #3B82F6; }
-  .s-agendar      { background: #FEF9C3; color: #854D0E; border-left: 2.5px solid #EAB308; }
-  .s-agendado     { background: #D1FAE5; color: #065F46; border-left: 2.5px solid #10B981; }
-  .s-postado      { background: #DCFCE7; color: #14532D; border-left: 2.5px solid #22C55E; }
+  .post-card { border-radius: 4px; padding: 2px 5px; font-size: 10px; line-height: 1.35; cursor: pointer; flex-shrink: 0; }
+  .post-card .card-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+  .post-card .card-fmt { font-size: 9px; opacity: .72; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .add-btn { position: absolute; bottom: 5px; right: 5px; width: 18px; height: 18px; border-radius: 50%; border: 1px solid #e0ddd6; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #aaa; cursor: pointer; opacity: 0; line-height: 1; }
+  .s-agendar  { background: #FEF3C7; color: #92400E; border-left: 2.5px solid #F59E0B; }
+  .s-agendado { background: #DBEAFE; color: #1E40AF; border-left: 2.5px solid #3B82F6; }
+  .s-postado  { background: #DCFCE7; color: #14532D; border-left: 2.5px solid #22C55E; }
+
+  .post-card.dragging { opacity: .4; }
+  .add-btn { position: absolute; bottom: 4px; right: 4px; width: 18px; height: 18px; border-radius: 50%; border: 1px solid #e0ddd6; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #aaa; cursor: pointer; opacity: 0; line-height: 1; flex-shrink: 0; }
   .day:hover .add-btn { opacity: 1; }
-  .status-bar { font-size: 11px; color: #aaa; text-align: center; padding: 6px 0 0; min-height: 18px; }
+  .status-bar { font-size: 11px; color: #aaa; text-align: center; padding: 5px 0 0; min-height: 16px; }
   .status-bar.erro { color: #E24B4A; }
 
   /* ── IDEAS ── */
   .ideas-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .ideas-toolbar h2 { font-size: 16px; font-weight: 500; flex: 1; }
-  .btn-add-idea { background: #6C3FC5; color: #fff; border: none; border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }
+  .btn-add-idea { background: #6C3FC5; color: #fff; border: none; border-radius: 8px; padding: 7px 16px; font-size: 13px; cursor: pointer; font-weight: 500; }
   .btn-add-idea:hover { opacity: .88; }
   .ideas-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   @media(max-width:700px){ .ideas-sections { grid-template-columns: 1fr; } }
@@ -80,39 +77,52 @@
   .ideas-list { padding: 8px; min-height: 80px; }
   .idea-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; cursor: pointer; border: 1px solid #f0ede8; margin-bottom: 6px; transition: background .1s; background: #fff; }
   .idea-item:hover { background: #faf8ff; }
-  .idea-item.used { opacity: .55; }
+  .idea-item.used { opacity: .5; }
   .idea-info { flex: 1; min-width: 0; }
   .idea-tema { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .idea-status-badge { font-size: 10px; font-weight: 600; border-radius: 4px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0; }
-  .idea-link-icon { font-size: 14px; color: #9CA3AF; flex-shrink: 0; text-decoration: none; }
+  .idea-link-icon { font-size: 15px; flex-shrink: 0; text-decoration: none; color: #9CA3AF; }
   .idea-link-icon:hover { color: #6C3FC5; }
   .ideas-empty { text-align: center; color: #bbb; font-size: 13px; padding: 2rem 1rem; }
 
   /* ── MODAL ── */
-  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; z-index: 200; }
-  .modal { background: #fff; border-radius: 14px; border: 1px solid #e0ddd6; padding: 1.5rem; width: 400px; max-width: 95vw; box-shadow: 0 8px 40px rgba(0,0,0,.14); max-height: 90vh; overflow-y: auto; }
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.38); display: flex; align-items: center; justify-content: center; z-index: 200; }
+  .modal { background: #fff; border-radius: 14px; border: 1px solid #e0ddd6; padding: 1.5rem; width: 420px; max-width: 96vw; box-shadow: 0 8px 40px rgba(0,0,0,.15); max-height: 92vh; overflow-y: auto; }
   .modal h3 { font-size: 15px; font-weight: 600; margin-bottom: 1rem; }
   .modal label { font-size: 11px; color: #777; display: block; margin-bottom: 3px; margin-top: 12px; text-transform: uppercase; letter-spacing: .04em; }
   .modal input, .modal select, .modal textarea { width: 100%; font-size: 13px; padding: 7px 10px; border: 1px solid #e0ddd6; border-radius: 8px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; transition: border .15s; }
   .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: #6C3FC5; }
   .modal textarea { resize: vertical; }
   .modal textarea.tall { height: 90px; }
-  .modal-actions { display: flex; gap: 8px; margin-top: 1.25rem; justify-content: flex-end; align-items: center; }
+  .modal textarea.xtall { height: 110px; }
+  .link-display { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+  .link-display a { font-size: 12px; color: #6C3FC5; text-decoration: underline; word-break: break-all; }
+  .modal-actions { display: flex; gap: 8px; margin-top: 1.25rem; justify-content: flex-end; align-items: center; flex-wrap: wrap; }
   .modal-actions button { font-size: 13px; padding: 7px 16px; border-radius: 8px; cursor: pointer; font-family: inherit; }
   .btn-cancel { background: none; border: 1px solid #e0ddd6; color: #777; }
   .btn-cancel:hover { background: #f7f5f0; }
-  .btn-save { background: #6C3FC5; border: none; color: #fff; }
+  .btn-save { background: #6C3FC5; border: none; color: #fff; font-weight: 500; }
   .btn-save:hover { opacity: .88; }
-  .btn-delete { background: none; border: 1px solid #E24B4A; color: #E24B4A; margin-right: auto; }
+  .btn-delete { background: none; border: 1px solid #E24B4A; color: #E24B4A; }
   .btn-delete:hover { background: #fff0f0; }
-  .btn-mark-used { background: none; border: 1px solid #10B981; color: #065F46; margin-right: auto; font-size: 12px; }
+  .btn-mark-used { background: none; border: 1px solid #10B981; color: #065F46; font-size: 12px; }
   .btn-mark-used:hover { background: #f0fdf4; }
+
+  @media(max-width:600px){
+    .header { height: auto; padding: .75rem 1rem; gap: 8px; }
+    .day { height: 90px; }
+    .post-card .card-fmt { display: none; }
+  }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-brand">Kaka <span>Gomes</span> · Conteúdo</div>
+  <div class="header-brand">Kaka <span>Gomes</span></div>
+  <div class="header-center">
+    <div class="header-tab active" id="tab-calendar" onclick="switchTab('calendar')">📅 Calendário</div>
+    <div class="header-tab" id="tab-ideas" onclick="switchTab('ideas')">💡 Banco de Ideias</div>
+  </div>
   <div class="header-links">
     <a href="https://drive.google.com/drive/folders/1jzTlKA04myKAu-4gnGhWMcmBEgC28ooI?usp=sharing" target="_blank">
       <svg viewBox="0 0 24 24"><path d="M6.6 2L2 10l4.4 7.6h11.2L22 10 17.6 2H6.6zm.8 1.6h9.2l3.6 6.2-3.6 6.2H7.4L3.8 9.8l3.6-6.2zM8.5 9l3.5 6 3.5-6H8.5z"/></svg>
@@ -125,11 +135,6 @@
   </div>
 </div>
 
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('calendar')">📅 Calendário</div>
-  <div class="tab" onclick="switchTab('ideas')">💡 Banco de Ideias</div>
-</div>
-
 <div class="page active" id="page-calendar">
   <div class="app">
     <div class="cal-header">
@@ -140,7 +145,11 @@
         <button onclick="changeMonth(1)">&#8250;</button>
       </div>
     </div>
-    <div class="legend" id="cal-legend"></div>
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#F59E0B"></div>Agendar</div>
+      <div class="legend-item"><div class="dot" style="background:#3B82F6"></div>Agendado</div>
+      <div class="legend-item"><div class="dot" style="background:#22C55E"></div>Postado</div>
+    </div>
     <div class="grid-header">
       <div>dom</div><div>seg</div><div>ter</div><div>qua</div><div>qui</div><div>sex</div><div>sáb</div>
     </div>
@@ -158,15 +167,13 @@
     <div class="ideas-sections">
       <div class="ideas-box">
         <div class="ideas-box-header nao-utilizado">
-          Não utilizadas
-          <span class="idea-count" id="count-unused">0</span>
+          Não utilizadas <span class="idea-count" id="count-unused">0</span>
         </div>
         <div class="ideas-list" id="list-unused"></div>
       </div>
       <div class="ideas-box">
         <div class="ideas-box-header utilizado">
-          Utilizadas / Publicadas
-          <span class="idea-count" id="count-used">0</span>
+          Utilizadas / Publicadas <span class="idea-count" id="count-used">0</span>
         </div>
         <div class="ideas-list" id="list-used"></div>
       </div>
@@ -180,15 +187,10 @@
     <h3 id="mp-title">Novo post</h3>
     <label>Tema / Título</label>
     <input type="text" id="mp-tema" placeholder="Ex: 3 erros que destroem seu alcance">
+    <label>Data de Publicação</label>
+    <input type="date" id="mp-data">
     <label>Status</label>
     <select id="mp-status">
-      <option value="s-planejamento">PLANEJAMENTO</option>
-      <option value="s-design">DESIGN</option>
-      <option value="s-em-gravacao">EM GRAVAÇÃO</option>
-      <option value="s-gravado">GRAVADO</option>
-      <option value="s-editando">EDITANDO</option>
-      <option value="s-aprovacao">APROVAÇÃO KAKA</option>
-      <option value="s-aprovado">APROVADO</option>
       <option value="s-agendar">AGENDAR</option>
       <option value="s-agendado">AGENDADO</option>
       <option value="s-postado">POSTADO</option>
@@ -205,7 +207,11 @@
     <label>Legenda</label>
     <textarea class="tall" id="mp-legenda" placeholder="Cole aqui a legenda do post..."></textarea>
     <label>Link Canva / Drive</label>
-    <input type="url" id="mp-link" placeholder="https://...">
+    <input type="url" id="mp-link" placeholder="https://..." oninput="updateLinkPreview()">
+    <div class="link-display" id="mp-link-display" style="display:none">
+      <span style="font-size:11px;color:#aaa">→</span>
+      <a id="mp-link-anchor" href="#" target="_blank">Abrir link ↗</a>
+    </div>
     <div class="modal-actions">
       <button class="btn-delete" id="mp-btn-delete" onclick="deletePost()" style="display:none">Excluir</button>
       <button class="btn-cancel" onclick="closeModal('modal-post')">Cancelar</button>
@@ -222,19 +228,20 @@
     <input type="text" id="mi-tema" placeholder="Ex: Como criar conteúdo sem aparecer">
     <label>Status</label>
     <select id="mi-status">
-      <option value="s-planejamento">PLANEJAMENTO</option>
-      <option value="s-design">DESIGN</option>
-      <option value="s-em-gravacao">EM GRAVAÇÃO</option>
-      <option value="s-gravado">GRAVADO</option>
-      <option value="s-editando">EDITANDO</option>
-      <option value="s-aprovacao">APROVAÇÃO KAKA</option>
-      <option value="s-aprovado">APROVADO</option>
       <option value="s-agendar">AGENDAR</option>
       <option value="s-agendado">AGENDADO</option>
       <option value="s-postado">POSTADO</option>
     </select>
+    <label>Texto do Conteúdo</label>
+    <textarea class="xtall" id="mi-texto" placeholder="Rascunho, roteiro ou descrição do conteúdo..."></textarea>
+    <label>Legenda</label>
+    <textarea class="tall" id="mi-legenda" placeholder="Cole aqui a legenda do post..."></textarea>
     <label>Link do Design (Canva / Drive)</label>
-    <input type="url" id="mi-link" placeholder="https://canva.com/...">
+    <input type="url" id="mi-link" placeholder="https://canva.com/..." oninput="updateIdeaLinkPreview()">
+    <div class="link-display" id="mi-link-display" style="display:none">
+      <span style="font-size:11px;color:#aaa">→</span>
+      <a id="mi-link-anchor" href="#" target="_blank">Abrir link ↗</a>
+    </div>
     <div class="modal-actions">
       <button class="btn-delete" id="mi-btn-delete" onclick="deleteIdea()" style="display:none">Excluir</button>
       <button class="btn-mark-used" id="mi-btn-used" onclick="toggleIdeaUsed()" style="display:none">Marcar como utilizada</button>
@@ -261,43 +268,14 @@
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
-  const STATUS_LABEL = {
-    's-planejamento': 'PLANEJAMENTO',
-    's-design':       'DESIGN',
-    's-em-gravacao':  'EM GRAVAÇÃO',
-    's-gravado':      'GRAVADO',
-    's-editando':     'EDITANDO',
-    's-aprovacao':    'APROVAÇÃO KAKA',
-    's-aprovado':     'APROVADO',
-    's-agendar':      'AGENDAR',
-    's-agendado':     'AGENDADO',
-    's-postado':      'POSTADO',
-  };
-  const STATUS_COLORS = {
-    's-planejamento': '#9CA3AF',
-    's-design':       '#7C3AED',
-    's-em-gravacao':  '#F59E0B',
-    's-gravado':      '#EF4444',
-    's-editando':     '#F97316',
-    's-aprovacao':    '#0EA5E9',
-    's-aprovado':     '#3B82F6',
-    's-agendar':      '#EAB308',
-    's-agendado':     '#10B981',
-    's-postado':      '#22C55E',
-  };
-
-  const legendEl = document.getElementById('cal-legend');
-  Object.entries(STATUS_LABEL).forEach(([k, v]) => {
-    const item = document.createElement('div');
-    item.className = 'legend-item';
-    item.innerHTML = `<div class="dot" style="background:${STATUS_COLORS[k]}"></div>${v}`;
-    legendEl.appendChild(item);
-  });
+  const STATUS_LABEL  = { 's-agendar':'AGENDAR', 's-agendado':'AGENDADO', 's-postado':'POSTADO' };
+  const STATUS_COLORS = { 's-agendar':'#F59E0B', 's-agendado':'#3B82F6', 's-postado':'#22C55E' };
 
   let posts = {};
   let cur = new Date();
   let editingPost = null;
   let editDayKey = null;
+  let dragData = null;
 
   const postsRef = ref(db, 'posts');
   onValue(postsRef, (snap) => {
@@ -345,18 +323,43 @@
       div.appendChild(ns);
 
       const k = dayKey(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+
+      div.addEventListener('dragover', e => { e.preventDefault(); div.classList.add('drag-over'); });
+      div.addEventListener('dragleave', () => div.classList.remove('drag-over'));
+      div.addEventListener('drop', async e => {
+        e.preventDefault();
+        div.classList.remove('drag-over');
+        if(!dragData || dragData.dayKey === k) return;
+        const p = { ...dragData.post, data: k };
+        try {
+          await set(ref(db, `posts/${k}/${dragData.postId}`), p);
+          await remove(ref(db, `posts/${dragData.dayKey}/${dragData.postId}`));
+        } catch(err) { setStatus('Erro ao mover post.', true); }
+        dragData = null;
+      });
+
+      const postsWrap = document.createElement('div');
+      postsWrap.className = 'day-posts';
+
       const dp = posts[k];
       if(dp){
         Object.entries(dp).forEach(([id,p])=>{
           const card=document.createElement('div');
-          card.className=`post-card ${p.status||'s-planejamento'}`;
-          card.innerHTML=`<div>${p.tema||'(sem tema)'}</div><div class="card-fmt">${STATUS_LABEL[p.status]||''} · ${p.formato||''}</div>`;
-          card.title=p.tema;
-          card.onclick=(e)=>{e.stopPropagation();openPostEdit(k,id,p);};
-          div.appendChild(card);
+          card.className=`post-card ${p.status||'s-agendar'}`;
+          card.draggable = true;
+          card.innerHTML=`<div class="card-title">${p.tema||'(sem tema)'}</div><div class="card-fmt">${STATUS_LABEL[p.status]||''} · ${p.formato||''}${p.link?' · <a href="'+p.link+'" target="_blank" onclick="event.stopPropagation()" style="color:inherit;opacity:.8">🔗</a>':''}</div>`;
+          card.addEventListener('dragstart', e => {
+            dragData = { dayKey: k, postId: id, post: p };
+            card.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+          });
+          card.addEventListener('dragend', () => card.classList.remove('dragging'));
+          card.onclick=(e)=>{ if(e.target.tagName==='A') return; e.stopPropagation(); openPostEdit(k,id,p); };
+          postsWrap.appendChild(card);
         });
       }
 
+      div.appendChild(postsWrap);
       const add=document.createElement('div');
       add.className='add-btn'; add.textContent='+';
       add.onclick=(e)=>{e.stopPropagation();openPostNew(k,dateObj);};
@@ -370,11 +373,13 @@
     editingPost=null; editDayKey=k;
     document.getElementById('mp-title').textContent=`Novo post — ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
     document.getElementById('mp-tema').value='';
-    document.getElementById('mp-status').value='s-planejamento';
+    document.getElementById('mp-data').value=k;
+    document.getElementById('mp-status').value='s-agendar';
     document.getElementById('mp-formato').value='Reels';
     document.getElementById('mp-musica').value='';
     document.getElementById('mp-legenda').value='';
     document.getElementById('mp-link').value='';
+    document.getElementById('mp-link-display').style.display='none';
     document.getElementById('mp-btn-delete').style.display='none';
     document.getElementById('modal-post').style.display='flex';
     setTimeout(()=>document.getElementById('mp-tema').focus(),50);
@@ -385,16 +390,22 @@
     const parts=k.split('-');
     document.getElementById('mp-title').textContent=`Editar post — ${parts[2]}/${parts[1]}/${parts[0]}`;
     document.getElementById('mp-tema').value=p.tema||'';
-    document.getElementById('mp-status').value=p.status||'s-planejamento';
+    document.getElementById('mp-data').value=p.data||k;
+    document.getElementById('mp-status').value=p.status||'s-agendar';
     document.getElementById('mp-formato').value=p.formato||'Reels';
     document.getElementById('mp-musica').value=p.musica||'';
     document.getElementById('mp-legenda').value=p.legenda||'';
     document.getElementById('mp-link').value=p.link||'';
+    const ld=document.getElementById('mp-link-display');
+    const la=document.getElementById('mp-link-anchor');
+    if(p.link){ ld.style.display='flex'; la.href=p.link; la.textContent='Abrir link ↗'; }
+    else { ld.style.display='none'; }
     document.getElementById('mp-btn-delete').style.display='block';
     document.getElementById('modal-post').style.display='flex';
   }
 
   async function savePost() {
+    const newKey = document.getElementById('mp-data').value || editDayKey;
     const p={
       tema:    document.getElementById('mp-tema').value,
       status:  document.getElementById('mp-status').value,
@@ -402,10 +413,18 @@
       musica:  document.getElementById('mp-musica').value,
       legenda: document.getElementById('mp-legenda').value,
       link:    document.getElementById('mp-link').value,
+      data:    newKey,
     };
     const id=editingPost||Date.now().toString();
-    try{ await set(ref(db,`posts/${editDayKey}/${id}`),p); closeModal('modal-post'); }
-    catch(e){ setStatus('Erro ao salvar.',true); }
+    try {
+      if(editingPost && newKey !== editDayKey) {
+        await set(ref(db,`posts/${newKey}/${id}`),p);
+        await remove(ref(db,`posts/${editDayKey}/${id}`));
+      } else {
+        await set(ref(db,`posts/${newKey}/${id}`),p);
+      }
+      closeModal('modal-post');
+    } catch(e){ setStatus('Erro ao salvar.',true); }
   }
 
   async function deletePost() {
@@ -413,14 +432,19 @@
     catch(e){ setStatus('Erro ao excluir.',true); }
   }
 
+  function updateLinkPreview() {
+    const v=document.getElementById('mp-link').value.trim();
+    const ld=document.getElementById('mp-link-display');
+    const la=document.getElementById('mp-link-anchor');
+    if(v){ ld.style.display='flex'; la.href=v; la.textContent='Abrir link ↗'; }
+    else { ld.style.display='none'; }
+  }
+
   let ideas = {};
   let editingIdea = null;
 
   const ideasRef = ref(db,'ideas');
-  onValue(ideasRef,(snap)=>{
-    ideas=snap.val()||{};
-    renderIdeas();
-  });
+  onValue(ideasRef,(snap)=>{ ideas=snap.val()||{}; renderIdeas(); });
 
   function renderIdeas() {
     const unused=document.getElementById('list-unused');
@@ -441,12 +465,12 @@
   function buildIdeaEl(id,idea) {
     const div=document.createElement('div');
     div.className='idea-item'+(idea.used?' used':'');
-    const statusColor=STATUS_COLORS[idea.status]||'#9CA3AF';
-    const statusLabel=STATUS_LABEL[idea.status]||'';
+    const sc=STATUS_COLORS[idea.status]||'#9CA3AF';
+    const sl=STATUS_LABEL[idea.status]||'';
     div.innerHTML=`
       <div class="idea-info"><div class="idea-tema">${idea.tema||'(sem título)'}</div></div>
-      <span class="idea-status-badge" style="background:${statusColor}22;color:${statusColor}">${statusLabel}</span>
-      ${idea.link?`<a class="idea-link-icon" href="${idea.link}" target="_blank" onclick="event.stopPropagation()">🔗</a>`:''}
+      <span class="idea-status-badge" style="background:${sc}22;color:${sc}">${sl}</span>
+      ${idea.link?`<a class="idea-link-icon" href="${idea.link}" target="_blank" onclick="event.stopPropagation()" title="Abrir design">🔗</a>`:''}
     `;
     div.onclick=()=>openIdeaEdit(id,idea);
     return div;
@@ -456,8 +480,11 @@
     editingIdea=null;
     document.getElementById('mi-title').textContent='Nova ideia';
     document.getElementById('mi-tema').value='';
-    document.getElementById('mi-status').value='s-planejamento';
+    document.getElementById('mi-status').value='s-agendar';
+    document.getElementById('mi-texto').value='';
+    document.getElementById('mi-legenda').value='';
     document.getElementById('mi-link').value='';
+    document.getElementById('mi-link-display').style.display='none';
     document.getElementById('mi-btn-delete').style.display='none';
     document.getElementById('mi-btn-used').style.display='none';
     document.getElementById('modal-idea').style.display='flex';
@@ -468,21 +495,29 @@
     editingIdea=id;
     document.getElementById('mi-title').textContent='Editar ideia';
     document.getElementById('mi-tema').value=idea.tema||'';
-    document.getElementById('mi-status').value=idea.status||'s-planejamento';
+    document.getElementById('mi-status').value=idea.status||'s-agendar';
+    document.getElementById('mi-texto').value=idea.texto||'';
+    document.getElementById('mi-legenda').value=idea.legenda||'';
     document.getElementById('mi-link').value=idea.link||'';
+    const ld=document.getElementById('mi-link-display');
+    const la=document.getElementById('mi-link-anchor');
+    if(idea.link){ ld.style.display='flex'; la.href=idea.link; la.textContent='Abrir link ↗'; }
+    else { ld.style.display='none'; }
     document.getElementById('mi-btn-delete').style.display='block';
-    const usedBtn=document.getElementById('mi-btn-used');
-    usedBtn.style.display='block';
-    usedBtn.textContent=idea.used?'Mover para não utilizada':'Marcar como utilizada';
+    const ub=document.getElementById('mi-btn-used');
+    ub.style.display='block';
+    ub.textContent=idea.used?'Mover para não utilizada':'Marcar como utilizada';
     document.getElementById('modal-idea').style.display='flex';
   }
 
   async function saveIdea() {
     const idea={
-      tema:   document.getElementById('mi-tema').value,
-      status: document.getElementById('mi-status').value,
-      link:   document.getElementById('mi-link').value,
-      used:   editingIdea ? (ideas[editingIdea]?.used||false) : false,
+      tema:    document.getElementById('mi-tema').value,
+      status:  document.getElementById('mi-status').value,
+      texto:   document.getElementById('mi-texto').value,
+      legenda: document.getElementById('mi-legenda').value,
+      link:    document.getElementById('mi-link').value,
+      used:    editingIdea ? (ideas[editingIdea]?.used||false) : false,
     };
     const id=editingIdea||Date.now().toString();
     try{ await set(ref(db,`ideas/${id}`),idea); closeModal('modal-idea'); }
@@ -500,20 +535,23 @@
     catch(e){ alert('Erro ao excluir.'); }
   }
 
+  function updateIdeaLinkPreview() {
+    const v=document.getElementById('mi-link').value.trim();
+    const ld=document.getElementById('mi-link-display');
+    const la=document.getElementById('mi-link-anchor');
+    if(v){ ld.style.display='flex'; la.href=v; la.textContent='Abrir link ↗'; }
+    else { ld.style.display='none'; }
+  }
+
   function closeModal(id) { document.getElementById(id).style.display='none'; }
   function changeMonth(d){ cur=new Date(cur.getFullYear(),cur.getMonth()+d,1); renderCal(); }
   function goToday(){ cur=new Date(); renderCal(); }
 
   function switchTab(tab) {
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    if(tab==='calendar'){
-      document.querySelectorAll('.tab')[0].classList.add('active');
-      document.getElementById('page-calendar').classList.add('active');
-    } else {
-      document.querySelectorAll('.tab')[1].classList.add('active');
-      document.getElementById('page-ideas').classList.add('active');
-    }
+    document.getElementById('tab-calendar').classList.toggle('active', tab==='calendar');
+    document.getElementById('tab-ideas').classList.toggle('active', tab==='ideas');
+    document.getElementById('page-calendar').classList.toggle('active', tab==='calendar');
+    document.getElementById('page-ideas').classList.toggle('active', tab==='ideas');
   }
 
   [document.getElementById('modal-post'), document.getElementById('modal-idea')].forEach(m=>{
@@ -526,6 +564,8 @@
   window.saveIdea=saveIdea; window.deleteIdea=deleteIdea;
   window.toggleIdeaUsed=toggleIdeaUsed; window.openIdeaNew=openIdeaNew;
   window.switchTab=switchTab; window.closeModal=closeModal;
+  window.updateLinkPreview=updateLinkPreview;
+  window.updateIdeaLinkPreview=updateIdeaLinkPreview;
 </script>
 </body>
 </html>
