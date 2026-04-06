@@ -29,7 +29,7 @@
   .cal-nav { display: flex; align-items: center; gap: 8px; }
   .cal-nav button { background: none; border: 1px solid #e0ddd6; border-radius: 8px; padding: 5px 12px; cursor: pointer; font-size: 13px; color: #4a4a4a; }
   .cal-nav button:hover { background: #f0ede8; }
-  .legend { display: flex; gap: 14px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+  .legend { display: flex; gap: 12px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #777; }
   .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .grid-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; margin-bottom: 1px; }
@@ -46,9 +46,10 @@
   .post-card { border-radius: 4px; padding: 2px 5px; font-size: 10px; line-height: 1.35; cursor: pointer; flex-shrink: 0; }
   .post-card .card-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
   .post-card .card-fmt { font-size: 9px; opacity: .72; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .s-agendar  { background: #FEF3C7; color: #92400E; border-left: 2.5px solid #F59E0B; }
-  .s-agendado { background: #DBEAFE; color: #1E40AF; border-left: 2.5px solid #3B82F6; }
-  .s-postado  { background: #DCFCE7; color: #14532D; border-left: 2.5px solid #22C55E; }
+  .s-aprovacao-kaka { background: #E0F2FE; color: #075985; border-left: 2.5px solid #0EA5E9; }
+  .s-agendar        { background: #FEF3C7; color: #92400E; border-left: 2.5px solid #F59E0B; }
+  .s-agendado       { background: #DBEAFE; color: #1E40AF; border-left: 2.5px solid #3B82F6; }
+  .s-postado        { background: #DCFCE7; color: #14532D; border-left: 2.5px solid #22C55E; }
   .post-card.dragging { opacity: .4; }
   .add-btn { position: absolute; bottom: 4px; right: 4px; width: 18px; height: 18px; border-radius: 50%; border: 1px solid #e0ddd6; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #aaa; cursor: pointer; opacity: 0; line-height: 1; }
   .day:hover .add-btn { opacity: 1; }
@@ -57,17 +58,26 @@
 
   .ideas-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .ideas-toolbar h2 { font-size: 16px; font-weight: 500; flex: 1; }
-  .ideas-tabs { display: flex; gap: 6px; margin-bottom: 1.25rem; }
+  .btn-add-idea { background: #6C3FC5; color: #fff; border: none; border-radius: 8px; padding: 7px 16px; font-size: 13px; cursor: pointer; font-weight: 500; }
+  .btn-add-idea:hover { opacity: .88; }
+  .ideas-tabs { display: flex; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .ideas-tab { padding: 7px 18px; font-size: 13px; font-weight: 500; border-radius: 8px; cursor: pointer; border: 1.5px solid #e0ddd6; color: #777; background: #fff; transition: all .15s; }
   .ideas-tab.active { background: #6C3FC5; color: #fff; border-color: #6C3FC5; }
   .ideas-tab:not(.active):hover { background: #f7f5f0; }
   .ideas-panel { display: none; }
   .ideas-panel.active { display: block; }
-  .btn-add-idea { background: #6C3FC5; color: #fff; border: none; border-radius: 8px; padding: 7px 16px; font-size: 13px; cursor: pointer; font-weight: 500; }
-  .btn-add-idea:hover { opacity: .88; }
+
+  .filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .filter-bar label { font-size: 12px; color: #777; white-space: nowrap; }
+  .filter-select { font-size: 12px; padding: 5px 10px; border: 1px solid #e0ddd6; border-radius: 8px; background: #fff; color: #1a1a1a; cursor: pointer; outline: none; }
+  .filter-select:focus { border-color: #6C3FC5; }
+  .filter-clear { font-size: 12px; color: #6C3FC5; cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; }
+  .filter-count { font-size: 12px; color: #aaa; }
+
   .ideas-box { background: #fff; border: 1px solid #e5e2db; border-radius: 12px; overflow: hidden; }
   .ideas-box-header { padding: 12px 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0ede8; }
   .ideas-box-header.nao-utilizado { color: #6C3FC5; background: #faf8ff; }
+  .ideas-box-header.carrossel-header { color: #0369a1; background: #f0f9ff; }
   .ideas-box-header.utilizado { color: #059669; background: #f0fdf4; }
   .idea-count { font-size: 11px; font-weight: 400; background: #e5e2db; border-radius: 20px; padding: 2px 8px; color: #666; }
   .ideas-list { padding: 8px; min-height: 80px; }
@@ -141,6 +151,7 @@
       </div>
     </div>
     <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#0EA5E9"></div>Aprovação Kaká</div>
       <div class="legend-item"><div class="dot" style="background:#F59E0B"></div>Agendar</div>
       <div class="legend-item"><div class="dot" style="background:#3B82F6"></div>Agendado</div>
       <div class="legend-item"><div class="dot" style="background:#22C55E"></div>Postado</div>
@@ -164,18 +175,37 @@
       <div class="ideas-tab" id="itab-carrossel" onclick="switchIdeasTab('carrossel')">🎠 Carrossel</div>
       <div class="ideas-tab" id="itab-used" onclick="switchIdeasTab('used')">✅ Utilizadas</div>
     </div>
+
     <div class="ideas-panel active" id="panel-reels">
+      <div class="filter-bar">
+        <label>Filtrar por status:</label>
+        <select class="filter-select" id="filter-reels" onchange="renderIdeas()">
+          <option value="">Todos</option>
+        </select>
+        <button class="filter-clear" onclick="clearFilter('reels')">Limpar</button>
+        <span class="filter-count" id="filter-count-reels"></span>
+      </div>
       <div class="ideas-box">
         <div class="ideas-box-header nao-utilizado">Ideias de Reels <span class="idea-count" id="count-reels">0</span></div>
         <div class="ideas-list" id="list-reels"></div>
       </div>
     </div>
+
     <div class="ideas-panel" id="panel-carrossel">
+      <div class="filter-bar">
+        <label>Filtrar por status:</label>
+        <select class="filter-select" id="filter-carrossel" onchange="renderIdeas()">
+          <option value="">Todos</option>
+        </select>
+        <button class="filter-clear" onclick="clearFilter('carrossel')">Limpar</button>
+        <span class="filter-count" id="filter-count-carrossel"></span>
+      </div>
       <div class="ideas-box">
-        <div class="ideas-box-header nao-utilizado" style="color:#0369a1;background:#f0f9ff;">Ideias de Carrossel <span class="idea-count" id="count-carrossel">0</span></div>
+        <div class="ideas-box-header carrossel-header">Ideias de Carrossel <span class="idea-count" id="count-carrossel">0</span></div>
         <div class="ideas-list" id="list-carrossel"></div>
       </div>
     </div>
+
     <div class="ideas-panel" id="panel-used">
       <div class="ideas-box">
         <div class="ideas-box-header utilizado">Utilizadas / Publicadas <span class="idea-count" id="count-used">0</span></div>
@@ -195,6 +225,7 @@
     <input type="date" id="mp-data">
     <label>Status</label>
     <select id="mp-status">
+      <option value="s-aprovacao-kaka">APROVAÇÃO KAKÁ</option>
       <option value="s-agendar">AGENDAR</option>
       <option value="s-agendado">AGENDADO</option>
       <option value="s-postado">POSTADO</option>
@@ -285,60 +316,75 @@
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
-  const CAL_STATUS = { 's-agendar':'AGENDAR','s-agendado':'AGENDADO','s-postado':'POSTADO' };
+  const CAL_STATUS = {
+    's-aprovacao-kaka': 'APROVAÇÃO KAKÁ',
+    's-agendar':        'AGENDAR',
+    's-agendado':       'AGENDADO',
+    's-postado':        'POSTADO'
+  };
 
   const REELS_STATUS = [
-    {v:'planejamento',l:'PLANEJAMENTO',c:'#9CA3AF'},
-    {v:'em-gravacao', l:'EM GRAVAÇÃO', c:'#F59E0B'},
-    {v:'gravado',     l:'GRAVADO',     c:'#EF4444'},
-    {v:'editando',    l:'EDITANDO',    c:'#F97316'},
-    {v:'aprovacao',   l:'APROVAÇÃO KAKA',c:'#0EA5E9'},
-    {v:'aprovado',    l:'APROVADO',    c:'#3B82F6'},
-    {v:'agendar',     l:'AGENDAR',     c:'#EAB308'},
-    {v:'agendado',    l:'AGENDADO',    c:'#10B981'},
-    {v:'postado',     l:'POSTADO',     c:'#22C55E'},
+    {v:'ideia-a-executar', l:'IDEIA A EXECUTAR', c:'#9CA3AF'},
+    {v:'em-gravacao-kaka', l:'EM GRAVAÇÃO KAKÁ', c:'#F59E0B'},
+    {v:'gravado',          l:'GRAVADO',          c:'#EF4444'},
+    {v:'editando',         l:'EDITANDO',         c:'#F97316'},
+    {v:'aprovacao',        l:'APROVAÇÃO KAKÁ',   c:'#0EA5E9'},
+    {v:'aprovado',         l:'APROVADO',         c:'#3B82F6'},
+    {v:'agendar',          l:'AGENDAR',          c:'#EAB308'},
+    {v:'agendado',         l:'AGENDADO',         c:'#10B981'},
+    {v:'postado',          l:'POSTADO',          c:'#22C55E'},
   ];
 
   const CARROSSEL_STATUS = [
-    {v:'planejamento',l:'PLANEJAMENTO', c:'#9CA3AF'},
-    {v:'em-design',   l:'EM DESIGN',   c:'#7C3AED'},
-    {v:'aprovacao',   l:'APROVAÇÃO KAKA',c:'#0EA5E9'},
-    {v:'aprovado',    l:'APROVADO',    c:'#3B82F6'},
-    {v:'agendar',     l:'AGENDAR',     c:'#EAB308'},
-    {v:'agendado',    l:'AGENDADO',    c:'#10B981'},
-    {v:'postado',     l:'POSTADO',     c:'#22C55E'},
+    {v:'ideia-a-executar', l:'IDEIA A EXECUTAR', c:'#9CA3AF'},
+    {v:'em-design',        l:'EM DESIGN',        c:'#7C3AED'},
+    {v:'aprovacao',        l:'APROVAÇÃO KAKÁ',   c:'#0EA5E9'},
+    {v:'aprovado',         l:'APROVADO',         c:'#3B82F6'},
+    {v:'agendar',          l:'AGENDAR',          c:'#EAB308'},
+    {v:'agendado',         l:'AGENDADO',         c:'#10B981'},
+    {v:'postado',          l:'POSTADO',          c:'#22C55E'},
   ];
 
-  function getStatusList(tipo){ return tipo==='carrossel'?CARROSSEL_STATUS:REELS_STATUS; }
-  function getStatusInfo(tipo,val){ return getStatusList(tipo).find(s=>s.v===val)||{l:val,c:'#9CA3AF'}; }
+  function getStatusList(tipo){ return tipo==='carrossel' ? CARROSSEL_STATUS : REELS_STATUS; }
+  function getStatusInfo(tipo,val){ return getStatusList(tipo).find(s=>s.v===val)||{l:val||'',c:'#9CA3AF'}; }
+
+  function buildFilters(){
+    ['reels','carrossel'].forEach(tipo=>{
+      const sel=document.getElementById('filter-'+tipo);
+      sel.innerHTML='<option value="">Todos</option>';
+      getStatusList(tipo).forEach(s=>{
+        const o=document.createElement('option');
+        o.value=s.v; o.textContent=s.l; sel.appendChild(o);
+      });
+    });
+  }
+  buildFilters();
 
   function updateLP(prefix){
     const isRef=prefix.endsWith('-ref');
-    const inputId=isRef?prefix:prefix+'-link';
+    const inputId  =isRef?prefix:prefix+'-link';
     const displayId=isRef?prefix+'-display':prefix+'-link-display';
-    const anchorId=isRef?prefix+'-anchor':prefix+'-link-anchor';
+    const anchorId =isRef?prefix+'-anchor':prefix+'-link-anchor';
     const v=document.getElementById(inputId).value.trim();
-    const ld=document.getElementById(displayId);
-    const la=document.getElementById(anchorId);
+    const ld=document.getElementById(displayId), la=document.getElementById(anchorId);
     if(v){ld.style.display='flex';la.href=v;la.textContent=isRef?'Abrir referência ↗':'Abrir link ↗';}
     else{ld.style.display='none';}
   }
   window.updateLP=updateLP;
 
   function setLinkDisplay(prefix,val,isRef=false){
+    const inputId  =isRef?prefix+'-ref':prefix+'-link';
     const displayId=isRef?prefix+'-ref-display':prefix+'-link-display';
-    const anchorId=isRef?prefix+'-ref-anchor':prefix+'-link-anchor';
-    const inputId=isRef?prefix+'-ref':prefix+'-link';
+    const anchorId =isRef?prefix+'-ref-anchor':prefix+'-link-anchor';
     document.getElementById(inputId).value=val||'';
-    const ld=document.getElementById(displayId);
-    const la=document.getElementById(anchorId);
+    const ld=document.getElementById(displayId), la=document.getElementById(anchorId);
     if(val){ld.style.display='flex';la.href=val;la.textContent=isRef?'Abrir referência ↗':'Abrir link ↗';}
     else{ld.style.display='none';}
   }
 
-  let posts={},cur=new Date(),editingPost=null,editDayKey=null,dragData=null;
+  let posts={}, cur=new Date(), editingPost=null, editDayKey=null, dragData=null;
 
-  onValue(ref(db,'posts'),(snap)=>{
+  onValue(ref(db,'posts'),snap=>{
     posts=snap.val()||{};renderCal();
     setStatus('✓ Sincronizado');setTimeout(()=>setStatus(''),2000);
   },()=>setStatus('Erro ao conectar.',true));
@@ -382,16 +428,19 @@
       const dp=posts[k];
       if(dp){Object.entries(dp).forEach(([id,p])=>{
         const card=document.createElement('div');
-        card.className=`post-card ${p.status||'s-agendar'}`;card.draggable=true;
-        card.innerHTML=`<div class="card-title">${p.tema||'(sem tema)'}</div><div class="card-fmt">${CAL_STATUS[p.status]||''} · ${p.formato||''}${p.link?' · <a href="'+p.link+'" target="_blank" onclick="event.stopPropagation()" style="color:inherit;opacity:.8">🔗</a>':''}${p.ref?' · <a href="'+p.ref+'" target="_blank" onclick="event.stopPropagation()" style="color:inherit;opacity:.8">📎</a>':''}</div>`;
+        card.className=`post-card ${p.status||'s-aprovacao-kaka'}`;card.draggable=true;
+        card.innerHTML=`<div class="card-title">${p.tema||'(sem tema)'}</div>
+          <div class="card-fmt">${CAL_STATUS[p.status]||''} · ${p.formato||''}
+          ${p.link?` · <a href="${p.link}" target="_blank" onclick="event.stopPropagation()" style="color:inherit;opacity:.8">🔗</a>`:''}
+          ${p.ref?` · <a href="${p.ref}" target="_blank" onclick="event.stopPropagation()" style="color:inherit;opacity:.8">📎</a>`:''}</div>`;
         card.addEventListener('dragstart',e=>{dragData={dayKey:k,postId:id,post:p};card.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
         card.addEventListener('dragend',()=>card.classList.remove('dragging'));
-        card.onclick=(e)=>{if(e.target.tagName==='A')return;e.stopPropagation();openPostEdit(k,id,p);};
+        card.onclick=e=>{if(e.target.tagName==='A')return;e.stopPropagation();openPostEdit(k,id,p);};
         pw.appendChild(card);
       });}
       div.appendChild(pw);
       const add=document.createElement('div');add.className='add-btn';add.textContent='+';
-      add.onclick=(e)=>{e.stopPropagation();openPostNew(k,dateObj);};
+      add.onclick=e=>{e.stopPropagation();openPostNew(k,dateObj);};
       div.appendChild(add);div.onclick=()=>openPostNew(k,dateObj);grid.appendChild(div);
     }
   }
@@ -400,7 +449,7 @@
     editingPost=null;editDayKey=k;
     document.getElementById('mp-title').textContent=`Novo post — ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
     document.getElementById('mp-tema').value='';document.getElementById('mp-data').value=k;
-    document.getElementById('mp-status').value='s-agendar';document.getElementById('mp-formato').value='Reels';
+    document.getElementById('mp-status').value='s-aprovacao-kaka';document.getElementById('mp-formato').value='Reels';
     document.getElementById('mp-musica').value='';document.getElementById('mp-legenda').value='';
     setLinkDisplay('mp','',false);setLinkDisplay('mp','',true);
     document.getElementById('mp-btn-delete').style.display='none';
@@ -413,7 +462,7 @@
     const parts=k.split('-');
     document.getElementById('mp-title').textContent=`Editar post — ${parts[2]}/${parts[1]}/${parts[0]}`;
     document.getElementById('mp-tema').value=p.tema||'';document.getElementById('mp-data').value=p.data||k;
-    document.getElementById('mp-status').value=p.status||'s-agendar';document.getElementById('mp-formato').value=p.formato||'Reels';
+    document.getElementById('mp-status').value=p.status||'s-aprovacao-kaka';document.getElementById('mp-formato').value=p.formato||'Reels';
     document.getElementById('mp-musica').value=p.musica||'';document.getElementById('mp-legenda').value=p.legenda||'';
     setLinkDisplay('mp',p.link,false);setLinkDisplay('mp',p.ref,true);
     document.getElementById('mp-btn-delete').style.display='block';
@@ -439,31 +488,39 @@
     catch(e){setStatus('Erro ao excluir.',true);}
   }
 
-  let ideas={},editingIdea=null,currentIdeasTab='reels';
+  let ideas={}, editingIdea=null, currentIdeasTab='reels';
 
-  onValue(ref(db,'ideas'),(snap)=>{ideas=snap.val()||{};renderIdeas();});
+  onValue(ref(db,'ideas'),snap=>{ideas=snap.val()||{};renderIdeas();});
 
   function renderIdeas(){
+    const fr=document.getElementById('filter-reels').value;
+    const fc=document.getElementById('filter-carrossel').value;
     const lr=document.getElementById('list-reels'),lc=document.getElementById('list-carrossel'),lu=document.getElementById('list-used');
     lr.innerHTML='';lc.innerHTML='';lu.innerHTML='';
-    let cr=0,cc=0,cu=0;
+    let cr=0,cc=0,cu=0,crF=0,ccF=0;
     Object.entries(ideas).sort((a,b)=>b[0]-a[0]).forEach(([id,idea])=>{
-      const el=buildIdeaEl(id,idea);
-      if(idea.used){lu.appendChild(el);cu++;}
-      else if(idea.tipo==='carrossel'){lc.appendChild(el);cc++;}
-      else{lr.appendChild(el);cr++;}
+      if(idea.used){lu.appendChild(buildIdeaEl(id,idea));cu++;return;}
+      if(idea.tipo==='carrossel'){
+        cc++;
+        if(!fc||idea.status===fc){lc.appendChild(buildIdeaEl(id,idea));ccF++;}
+      } else {
+        cr++;
+        if(!fr||idea.status===fr){lr.appendChild(buildIdeaEl(id,idea));crF++;}
+      }
     });
-    if(!cr)lr.innerHTML='<div class="ideas-empty">Nenhuma ideia de Reels ainda</div>';
-    if(!cc)lc.innerHTML='<div class="ideas-empty">Nenhuma ideia de Carrossel ainda</div>';
-    if(!cu)lu.innerHTML='<div class="ideas-empty">Nenhuma ideia utilizada</div>';
+    if(!lr.children.length)lr.innerHTML=`<div class="ideas-empty">${fr?'Nenhuma ideia com esse status':'Nenhuma ideia de Reels ainda'}</div>`;
+    if(!lc.children.length)lc.innerHTML=`<div class="ideas-empty">${fc?'Nenhuma ideia com esse status':'Nenhuma ideia de Carrossel ainda'}</div>`;
+    if(!lu.children.length)lu.innerHTML='<div class="ideas-empty">Nenhuma ideia utilizada</div>';
     document.getElementById('count-reels').textContent=cr;
     document.getElementById('count-carrossel').textContent=cc;
     document.getElementById('count-used').textContent=cu;
+    document.getElementById('filter-count-reels').textContent=fr?`${crF} de ${cr}`:'';
+    document.getElementById('filter-count-carrossel').textContent=fc?`${ccF} de ${cc}`:'';
   }
 
   function buildIdeaEl(id,idea){
     const div=document.createElement('div');div.className='idea-item'+(idea.used?' used':'');
-    const si=getStatusInfo(idea.tipo||'reels',idea.status||'planejamento');
+    const si=getStatusInfo(idea.tipo||'reels',idea.status||'ideia-a-executar');
     div.innerHTML=`
       <div class="idea-info"><div class="idea-tema">${idea.tema||'(sem título)'}</div></div>
       <span class="idea-status-badge" style="background:${si.c}22;color:${si.c}">${si.l}</span>
@@ -476,7 +533,10 @@
   function updateIdeaStatusOptions(){
     const tipo=document.getElementById('mi-tipo').value;
     const sel=document.getElementById('mi-status');const cur=sel.value;sel.innerHTML='';
-    getStatusList(tipo).forEach(s=>{const o=document.createElement('option');o.value=s.v;o.textContent=s.l;if(s.v===cur)o.selected=true;sel.appendChild(o);});
+    getStatusList(tipo).forEach(s=>{
+      const o=document.createElement('option');o.value=s.v;o.textContent=s.l;
+      if(s.v===cur)o.selected=true;sel.appendChild(o);
+    });
   }
   window.updateIdeaStatusOptions=updateIdeaStatusOptions;
 
@@ -500,7 +560,7 @@
     document.getElementById('mi-title').textContent='Editar ideia';
     document.getElementById('mi-tema').value=idea.tema||'';
     document.getElementById('mi-tipo').value=idea.tipo||'reels';updateIdeaStatusOptions();
-    document.getElementById('mi-status').value=idea.status||'planejamento';
+    document.getElementById('mi-status').value=idea.status||'ideia-a-executar';
     document.getElementById('mi-texto').value=idea.texto||'';document.getElementById('mi-legenda').value=idea.legenda||'';
     setLinkDisplay('mi',idea.link,false);setLinkDisplay('mi',idea.ref,true);
     document.getElementById('mi-btn-delete').style.display='block';
@@ -528,6 +588,10 @@
   async function deleteIdea(){
     try{await remove(ref(db,`ideas/${editingIdea}`));closeModal('modal-idea');}
     catch(e){alert('Erro ao excluir.');}
+  }
+
+  function clearFilter(tipo){
+    document.getElementById('filter-'+tipo).value='';renderIdeas();
   }
 
   function switchIdeasTab(tab){
@@ -560,7 +624,8 @@
   window.saveIdea=saveIdea;window.deleteIdea=deleteIdea;
   window.toggleIdeaUsed=toggleIdeaUsed;window.openIdeaNew=openIdeaNew;
   window.switchTab=switchTab;window.closeModal=closeModal;
-  window.switchIdeasTab=switchIdeasTab;
+  window.switchIdeasTab=switchIdeasTab;window.clearFilter=clearFilter;
+  window.renderIdeas=renderIdeas;
 </script>
 </body>
 </html>
