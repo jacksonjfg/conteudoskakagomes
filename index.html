@@ -24,6 +24,7 @@
   .page.active { display: block; }
   .app { max-width: 1140px; margin: 0 auto; padding: 1.25rem 1.5rem; }
 
+  /* CALENDAR */
   .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
   .cal-title { font-size: 17px; font-weight: 500; }
   .cal-nav { display: flex; align-items: center; gap: 8px; }
@@ -46,16 +47,19 @@
   .post-card { border-radius: 4px; padding: 2px 5px; font-size: 10px; line-height: 1.35; cursor: pointer; flex-shrink: 0; }
   .post-card .card-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
   .post-card .card-fmt { font-size: 9px; opacity: .72; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
   .s-aprovacao-kaka { background: #E0F2FE; color: #075985; border-left: 2.5px solid #0EA5E9; }
   .s-agendar        { background: #FEF3C7; color: #92400E; border-left: 2.5px solid #F59E0B; }
   .s-agendado       { background: #DBEAFE; color: #1E40AF; border-left: 2.5px solid #3B82F6; }
   .s-postado        { background: #DCFCE7; color: #14532D; border-left: 2.5px solid #22C55E; }
+
   .post-card.dragging { opacity: .4; }
   .add-btn { position: absolute; bottom: 4px; right: 4px; width: 18px; height: 18px; border-radius: 50%; border: 1px solid #e0ddd6; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #aaa; cursor: pointer; opacity: 0; line-height: 1; }
   .day:hover .add-btn { opacity: 1; }
   .status-bar { font-size: 11px; color: #aaa; text-align: center; padding: 5px 0 0; min-height: 16px; }
   .status-bar.erro { color: #E24B4A; }
 
+  /* IDEAS */
   .ideas-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .ideas-toolbar h2 { font-size: 16px; font-weight: 500; flex: 1; }
   .btn-add-idea { background: #6C3FC5; color: #fff; border: none; border-radius: 8px; padding: 7px 16px; font-size: 13px; cursor: pointer; font-weight: 500; }
@@ -87,13 +91,34 @@
   .idea-info { flex: 1; min-width: 0; }
   .idea-tema { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .idea-status-badge { font-size: 10px; font-weight: 600; border-radius: 4px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0; }
+  .idea-actions { display: flex; gap: 4px; flex-shrink: 0; }
   .idea-link-icon { font-size: 15px; flex-shrink: 0; text-decoration: none; color: #9CA3AF; }
   .idea-link-icon:hover { color: #6C3FC5; }
+  .btn-schedule-idea { font-size: 10px; background: #6C3FC5; color: #fff; border: none; border-radius: 5px; padding: 3px 7px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+  .btn-schedule-idea:hover { opacity: .85; }
   .ideas-empty { text-align: center; color: #bbb; font-size: 13px; padding: 2rem 1rem; }
 
+  /* DAY PICKER MODAL (schedule from idea) */
+  .day-picker-list { max-height: 220px; overflow-y: auto; margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .day-picker-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 8px; border: 1px solid #e0ddd6; font-size: 13px; cursor: pointer; transition: background .1s; }
+  .day-picker-item:hover { background: #f0ede8; }
+  .day-picker-item.selected { border-color: #6C3FC5; background: #f0ebff; }
+
+  /* PICK IDEA MODAL (from calendar) */
+  .pick-idea-list { max-height: 260px; overflow-y: auto; margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .pick-idea-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #e0ddd6; cursor: pointer; transition: background .1s; }
+  .pick-idea-item:hover { background: #faf8ff; border-color: #6C3FC5; }
+  .pick-idea-item .pi-tema { font-size: 13px; font-weight: 500; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pick-idea-item .pi-badge { font-size: 10px; font-weight: 600; border-radius: 4px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0; }
+  .pick-idea-item .pi-tipo { font-size: 10px; color: #aaa; flex-shrink: 0; }
+  .pick-idea-empty { text-align: center; color: #bbb; font-size: 13px; padding: 1.5rem; }
+
+  /* MODAL */
   .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.38); display: flex; align-items: center; justify-content: center; z-index: 200; }
   .modal { background: #fff; border-radius: 14px; border: 1px solid #e0ddd6; padding: 1.5rem; width: 420px; max-width: 96vw; box-shadow: 0 8px 40px rgba(0,0,0,.15); max-height: 92vh; overflow-y: auto; }
-  .modal h3 { font-size: 15px; font-weight: 600; margin-bottom: 1rem; }
+  .modal.sm { width: 360px; }
+  .modal h3 { font-size: 15px; font-weight: 600; margin-bottom: .25rem; }
+  .modal .modal-sub { font-size: 12px; color: #aaa; margin-bottom: 1rem; }
   .modal label { font-size: 11px; color: #777; display: block; margin-bottom: 3px; margin-top: 12px; text-transform: uppercase; letter-spacing: .04em; }
   .modal input, .modal select, .modal textarea { width: 100%; font-size: 13px; padding: 7px 10px; border: 1px solid #e0ddd6; border-radius: 8px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; transition: border .15s; }
   .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: #6C3FC5; }
@@ -112,6 +137,9 @@
   .btn-delete:hover { background: #fff0f0; }
   .btn-mark-used { background: none; border: 1px solid #10B981; color: #065F46; font-size: 12px; }
   .btn-mark-used:hover { background: #f0fdf4; }
+  .btn-from-idea { background: none; border: 1px solid #6C3FC5; color: #6C3FC5; font-size: 12px; }
+  .btn-from-idea:hover { background: #f0ebff; }
+  .divider { border: none; border-top: 1px solid #f0ede8; margin: 1rem 0 0; }
 
   @media(max-width:600px){
     .header { height: auto; padding: .75rem 1rem; gap: 8px; }
@@ -140,6 +168,7 @@
   </div>
 </div>
 
+<!-- CALENDAR PAGE -->
 <div class="page active" id="page-calendar">
   <div class="app">
     <div class="cal-header">
@@ -164,6 +193,7 @@
   </div>
 </div>
 
+<!-- IDEAS PAGE -->
 <div class="page" id="page-ideas">
   <div class="app">
     <div class="ideas-toolbar">
@@ -179,9 +209,7 @@
     <div class="ideas-panel active" id="panel-reels">
       <div class="filter-bar">
         <label>Filtrar por status:</label>
-        <select class="filter-select" id="filter-reels" onchange="renderIdeas()">
-          <option value="">Todos</option>
-        </select>
+        <select class="filter-select" id="filter-reels" onchange="renderIdeas()"><option value="">Todos</option></select>
         <button class="filter-clear" onclick="clearFilter('reels')">Limpar</button>
         <span class="filter-count" id="filter-count-reels"></span>
       </div>
@@ -194,9 +222,7 @@
     <div class="ideas-panel" id="panel-carrossel">
       <div class="filter-bar">
         <label>Filtrar por status:</label>
-        <select class="filter-select" id="filter-carrossel" onchange="renderIdeas()">
-          <option value="">Todos</option>
-        </select>
+        <select class="filter-select" id="filter-carrossel" onchange="renderIdeas()"><option value="">Todos</option></select>
         <button class="filter-clear" onclick="clearFilter('carrossel')">Limpar</button>
         <span class="filter-count" id="filter-count-carrossel"></span>
       </div>
@@ -215,7 +241,7 @@
   </div>
 </div>
 
-<!-- MODAL: POST -->
+<!-- MODAL: POST (calendar) -->
 <div class="modal-bg" id="modal-post" style="display:none">
   <div class="modal">
     <h3 id="mp-title">Novo post</h3>
@@ -232,10 +258,7 @@
     </select>
     <label>Formato</label>
     <select id="mp-formato">
-      <option>Reels</option>
-      <option>Carrossel</option>
-      <option>Feed (estático)</option>
-      <option>Story</option>
+      <option>Reels</option><option>Carrossel</option><option>Feed (estático)</option><option>Story</option>
     </select>
     <label>Música do Post</label>
     <input type="text" id="mp-musica" placeholder="Ex: Beyoncé - Texas Hold Em">
@@ -244,17 +267,16 @@
     <label>Link Canva / Drive</label>
     <input type="url" id="mp-link" placeholder="https://..." oninput="updateLP('mp')">
     <div class="link-display" id="mp-link-display" style="display:none">
-      <span style="font-size:11px;color:#aaa">→</span>
-      <a id="mp-link-anchor" href="#" target="_blank">Abrir link ↗</a>
+      <span style="font-size:11px;color:#aaa">→</span><a id="mp-link-anchor" href="#" target="_blank">Abrir link ↗</a>
     </div>
     <label>Link de Referência</label>
     <input type="url" id="mp-ref" placeholder="https://..." oninput="updateLP('mp-ref')">
     <div class="link-display" id="mp-ref-display" style="display:none">
-      <span style="font-size:11px;color:#aaa">→</span>
-      <a id="mp-ref-anchor" href="#" target="_blank">Abrir referência ↗</a>
+      <span style="font-size:11px;color:#aaa">→</span><a id="mp-ref-anchor" href="#" target="_blank">Abrir referência ↗</a>
     </div>
     <div class="modal-actions">
       <button class="btn-delete" id="mp-btn-delete" onclick="deletePost()" style="display:none">Excluir</button>
+      <button class="btn-from-idea" onclick="openPickIdea()" id="mp-btn-from-idea">💡 Usar ideia do banco</button>
       <button class="btn-cancel" onclick="closeModal('modal-post')">Cancelar</button>
       <button class="btn-save" onclick="savePost()">Salvar</button>
     </div>
@@ -269,8 +291,7 @@
     <input type="text" id="mi-tema" placeholder="Ex: Como criar conteúdo sem aparecer">
     <label>Tipo</label>
     <select id="mi-tipo" onchange="updateIdeaStatusOptions()">
-      <option value="reels">Reels</option>
-      <option value="carrossel">Carrossel</option>
+      <option value="reels">Reels</option><option value="carrossel">Carrossel</option>
     </select>
     <label>Status</label>
     <select id="mi-status"></select>
@@ -281,20 +302,53 @@
     <label>Link do Design (Canva / Drive)</label>
     <input type="url" id="mi-link" placeholder="https://canva.com/..." oninput="updateLP('mi')">
     <div class="link-display" id="mi-link-display" style="display:none">
-      <span style="font-size:11px;color:#aaa">→</span>
-      <a id="mi-link-anchor" href="#" target="_blank">Abrir link ↗</a>
+      <span style="font-size:11px;color:#aaa">→</span><a id="mi-link-anchor" href="#" target="_blank">Abrir link ↗</a>
     </div>
     <label>Link de Referência</label>
     <input type="url" id="mi-ref" placeholder="https://..." oninput="updateLP('mi-ref')">
     <div class="link-display" id="mi-ref-display" style="display:none">
-      <span style="font-size:11px;color:#aaa">→</span>
-      <a id="mi-ref-anchor" href="#" target="_blank">Abrir referência ↗</a>
+      <span style="font-size:11px;color:#aaa">→</span><a id="mi-ref-anchor" href="#" target="_blank">Abrir referência ↗</a>
     </div>
-    <div class="modal-actions">
+    <hr class="divider">
+    <div class="modal-actions" style="margin-top:.75rem">
       <button class="btn-delete" id="mi-btn-delete" onclick="deleteIdea()" style="display:none">Excluir</button>
       <button class="btn-mark-used" id="mi-btn-used" onclick="toggleIdeaUsed()" style="display:none">Marcar como utilizada</button>
+      <button class="btn-schedule-idea" id="mi-btn-schedule" onclick="openScheduleIdea()" style="display:none;background:#059669">📅 Agendar no Calendário</button>
       <button class="btn-cancel" onclick="closeModal('modal-idea')">Cancelar</button>
       <button class="btn-save" onclick="saveIdea()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SCHEDULE IDEA (pick date) -->
+<div class="modal-bg" id="modal-schedule" style="display:none">
+  <div class="modal sm">
+    <h3>📅 Agendar no Calendário</h3>
+    <p class="modal-sub" id="sch-sub"></p>
+    <label>Data de Publicação</label>
+    <input type="date" id="sch-data">
+    <label>Status no Calendário</label>
+    <select id="sch-status">
+      <option value="s-aprovacao-kaka">APROVAÇÃO KAKÁ</option>
+      <option value="s-agendar">AGENDAR</option>
+      <option value="s-agendado">AGENDADO</option>
+    </select>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-schedule')">Cancelar</button>
+      <button class="btn-save" onclick="confirmScheduleIdea()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: PICK IDEA (from calendar) -->
+<div class="modal-bg" id="modal-pick-idea" style="display:none">
+  <div class="modal sm">
+    <h3>💡 Usar ideia do banco</h3>
+    <p class="modal-sub" id="pick-sub"></p>
+    <input type="text" id="pick-search" placeholder="Buscar ideia..." oninput="renderPickIdeas()" style="margin-top:8px">
+    <div class="pick-idea-list" id="pick-idea-list"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-pick-idea')">Cancelar</button>
     </div>
   </div>
 </div>
@@ -317,35 +371,32 @@
   const db  = getDatabase(app);
 
   const CAL_STATUS = {
-    's-aprovacao-kaka': 'APROVAÇÃO KAKÁ',
-    's-agendar':        'AGENDAR',
-    's-agendado':       'AGENDADO',
-    's-postado':        'POSTADO'
+    's-aprovacao-kaka':'APROVAÇÃO KAKÁ','s-agendar':'AGENDAR','s-agendado':'AGENDADO','s-postado':'POSTADO'
   };
 
   const REELS_STATUS = [
-    {v:'ideia-a-executar', l:'IDEIA A EXECUTAR', c:'#9CA3AF'},
-    {v:'em-gravacao-kaka', l:'EM GRAVAÇÃO KAKÁ', c:'#F59E0B'},
-    {v:'gravado',          l:'GRAVADO',          c:'#EF4444'},
-    {v:'editando',         l:'EDITANDO',         c:'#F97316'},
-    {v:'aprovacao',        l:'APROVAÇÃO KAKÁ',   c:'#0EA5E9'},
-    {v:'aprovado',         l:'APROVADO',         c:'#3B82F6'},
-    {v:'agendar',          l:'AGENDAR',          c:'#EAB308'},
-    {v:'agendado',         l:'AGENDADO',         c:'#10B981'},
-    {v:'postado',          l:'POSTADO',          c:'#22C55E'},
+    {v:'ideia-a-executar',l:'IDEIA A EXECUTAR',c:'#9CA3AF'},
+    {v:'em-gravacao-kaka',l:'EM GRAVAÇÃO KAKÁ',c:'#F59E0B'},
+    {v:'gravado',         l:'GRAVADO',         c:'#EF4444'},
+    {v:'editando',        l:'EDITANDO',        c:'#F97316'},
+    {v:'aprovacao',       l:'APROVAÇÃO KAKÁ',  c:'#0EA5E9'},
+    {v:'aprovado',        l:'APROVADO',        c:'#3B82F6'},
+    {v:'agendar',         l:'AGENDAR',         c:'#EAB308'},
+    {v:'agendado',        l:'AGENDADO',        c:'#10B981'},
+    {v:'postado',         l:'POSTADO',         c:'#22C55E'},
   ];
 
   const CARROSSEL_STATUS = [
-    {v:'ideia-a-executar', l:'IDEIA A EXECUTAR', c:'#9CA3AF'},
-    {v:'em-design',        l:'EM DESIGN',        c:'#7C3AED'},
-    {v:'aprovacao',        l:'APROVAÇÃO KAKÁ',   c:'#0EA5E9'},
-    {v:'aprovado',         l:'APROVADO',         c:'#3B82F6'},
-    {v:'agendar',          l:'AGENDAR',          c:'#EAB308'},
-    {v:'agendado',         l:'AGENDADO',         c:'#10B981'},
-    {v:'postado',          l:'POSTADO',          c:'#22C55E'},
+    {v:'ideia-a-executar',l:'IDEIA A EXECUTAR',c:'#9CA3AF'},
+    {v:'em-design',       l:'EM DESIGN',       c:'#7C3AED'},
+    {v:'aprovacao',       l:'APROVAÇÃO KAKÁ',  c:'#0EA5E9'},
+    {v:'aprovado',        l:'APROVADO',        c:'#3B82F6'},
+    {v:'agendar',         l:'AGENDAR',         c:'#EAB308'},
+    {v:'agendado',        l:'AGENDADO',        c:'#10B981'},
+    {v:'postado',         l:'POSTADO',         c:'#22C55E'},
   ];
 
-  function getStatusList(tipo){ return tipo==='carrossel' ? CARROSSEL_STATUS : REELS_STATUS; }
+  function getStatusList(tipo){ return tipo==='carrossel'?CARROSSEL_STATUS:REELS_STATUS; }
   function getStatusInfo(tipo,val){ return getStatusList(tipo).find(s=>s.v===val)||{l:val||'',c:'#9CA3AF'}; }
 
   function buildFilters(){
@@ -353,20 +404,20 @@
       const sel=document.getElementById('filter-'+tipo);
       sel.innerHTML='<option value="">Todos</option>';
       getStatusList(tipo).forEach(s=>{
-        const o=document.createElement('option');
-        o.value=s.v; o.textContent=s.l; sel.appendChild(o);
+        const o=document.createElement('option'); o.value=s.v; o.textContent=s.l; sel.appendChild(o);
       });
     });
   }
   buildFilters();
 
+  // ── LINK HELPERS ──
   function updateLP(prefix){
     const isRef=prefix.endsWith('-ref');
     const inputId  =isRef?prefix:prefix+'-link';
     const displayId=isRef?prefix+'-display':prefix+'-link-display';
     const anchorId =isRef?prefix+'-anchor':prefix+'-link-anchor';
     const v=document.getElementById(inputId).value.trim();
-    const ld=document.getElementById(displayId), la=document.getElementById(anchorId);
+    const ld=document.getElementById(displayId),la=document.getElementById(anchorId);
     if(v){ld.style.display='flex';la.href=v;la.textContent=isRef?'Abrir referência ↗':'Abrir link ↗';}
     else{ld.style.display='none';}
   }
@@ -377,21 +428,22 @@
     const displayId=isRef?prefix+'-ref-display':prefix+'-link-display';
     const anchorId =isRef?prefix+'-ref-anchor':prefix+'-link-anchor';
     document.getElementById(inputId).value=val||'';
-    const ld=document.getElementById(displayId), la=document.getElementById(anchorId);
+    const ld=document.getElementById(displayId),la=document.getElementById(anchorId);
     if(val){ld.style.display='flex';la.href=val;la.textContent=isRef?'Abrir referência ↗':'Abrir link ↗';}
     else{ld.style.display='none';}
   }
 
+  // ── CALENDAR ──
   let posts={}, cur=new Date(), editingPost=null, editDayKey=null, dragData=null;
 
   onValue(ref(db,'posts'),snap=>{
-    posts=snap.val()||{};renderCal();
-    setStatus('✓ Sincronizado');setTimeout(()=>setStatus(''),2000);
+    posts=snap.val()||{}; renderCal();
+    setStatus('✓ Sincronizado'); setTimeout(()=>setStatus(''),2000);
   },()=>setStatus('Erro ao conectar.',true));
 
   function setStatus(msg,erro=false){
     const el=document.getElementById('status-bar');
-    el.textContent=msg;el.className='status-bar'+(erro?' erro':'');
+    el.textContent=msg; el.className='status-bar'+(erro?' erro':'');
   }
 
   function dayKey(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
@@ -400,85 +452,107 @@
     const y=cur.getFullYear(),m=cur.getMonth();
     const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
     document.getElementById('cal-title').textContent=`${meses[m]} de ${y}`;
-    const grid=document.getElementById('cal-grid');grid.innerHTML='';
+    const grid=document.getElementById('cal-grid'); grid.innerHTML='';
     const first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate(),dip=new Date(y,m,0).getDate();
     const today=new Date(),total=Math.ceil((first+dim)/7)*7;
+
     for(let i=0;i<total;i++){
-      const div=document.createElement('div');div.className='day';
+      const div=document.createElement('div'); div.className='day';
       let dn,other=false,dateObj;
       if(i<first){dn=dip-first+1+i;other=true;dateObj=new Date(y,m-1,dn);}
       else if(i>=first+dim){dn=i-first-dim+1;other=true;dateObj=new Date(y,m+1,dn);}
       else{dn=i-first+1;dateObj=new Date(y,m,dn);}
       if(other)div.classList.add('other-month');
+
       const isT=dateObj.toDateString()===today.toDateString();
       const ns=document.createElement('div');
-      ns.className='day-num'+(isT?' today-num':'');ns.textContent=dn;div.appendChild(ns);
+      ns.className='day-num'+(isT?' today-num':''); ns.textContent=dn; div.appendChild(ns);
+
       const k=dayKey(dateObj.getFullYear(),dateObj.getMonth(),dateObj.getDate());
+
       div.addEventListener('dragover',e=>{e.preventDefault();div.classList.add('drag-over');});
       div.addEventListener('dragleave',()=>div.classList.remove('drag-over'));
       div.addEventListener('drop',async e=>{
-        e.preventDefault();div.classList.remove('drag-over');
+        e.preventDefault(); div.classList.remove('drag-over');
         if(!dragData||dragData.dayKey===k)return;
         const p={...dragData.post,data:k};
-        try{await set(ref(db,`posts/${k}/${dragData.postId}`),p);await remove(ref(db,`posts/${dragData.dayKey}/${dragData.postId}`));}
-        catch(err){setStatus('Erro ao mover.',true);}
+        try{
+          await set(ref(db,`posts/${k}/${dragData.postId}`),p);
+          await remove(ref(db,`posts/${dragData.dayKey}/${dragData.postId}`));
+        }catch(err){setStatus('Erro ao mover.',true);}
         dragData=null;
       });
-      const pw=document.createElement('div');pw.className='day-posts';
+
+      const pw=document.createElement('div'); pw.className='day-posts';
       const dp=posts[k];
-      if(dp){Object.entries(dp).forEach(([id,p])=>{
-        const card=document.createElement('div');
-        card.className=`post-card ${p.status||'s-aprovacao-kaka'}`;card.draggable=true;
-        card.innerHTML=`<div class="card-title">${p.tema||'(sem tema)'}</div>
-          <div class="card-fmt">${CAL_STATUS[p.status]||''} · ${p.formato||''}
-          ${p.link?` · <a href="${p.link}" target="_blank" onclick="event.stopPropagation()" style="color:inherit;opacity:.8">🔗</a>`:''}
-          ${p.ref?` · <a href="${p.ref}" target="_blank" onclick="event.stopPropagation()" style="color:inherit;opacity:.8">📎</a>`:''}</div>`;
-        card.addEventListener('dragstart',e=>{dragData={dayKey:k,postId:id,post:p};card.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
-        card.addEventListener('dragend',()=>card.classList.remove('dragging'));
-        card.onclick=e=>{if(e.target.tagName==='A')return;e.stopPropagation();openPostEdit(k,id,p);};
-        pw.appendChild(card);
-      });}
+      if(dp){
+        Object.entries(dp).forEach(([id,p])=>{
+          const card=document.createElement('div');
+          card.className=`post-card ${p.status||'s-aprovacao-kaka'}`; card.draggable=true;
+          card.innerHTML=`<div class="card-title">${p.tema||'(sem tema)'}</div>
+            <div class="card-fmt">${CAL_STATUS[p.status]||''} · ${p.formato||''}
+            ${p.link?` · <a href="${p.link}" target="_blank" onclick="event.stopPropagation()" style="color:inherit;opacity:.8">🔗</a>`:''}
+            ${p.ref?` · <a href="${p.ref}" target="_blank" onclick="event.stopPropagation()" style="color:inherit;opacity:.8">📎</a>`:''}</div>`;
+          card.addEventListener('dragstart',e=>{dragData={dayKey:k,postId:id,post:p};card.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+          card.addEventListener('dragend',()=>card.classList.remove('dragging'));
+          card.onclick=e=>{if(e.target.tagName==='A')return;e.stopPropagation();openPostEdit(k,id,p);};
+          pw.appendChild(card);
+        });
+      }
       div.appendChild(pw);
-      const add=document.createElement('div');add.className='add-btn';add.textContent='+';
+
+      const add=document.createElement('div'); add.className='add-btn'; add.textContent='+';
       add.onclick=e=>{e.stopPropagation();openPostNew(k,dateObj);};
-      div.appendChild(add);div.onclick=()=>openPostNew(k,dateObj);grid.appendChild(div);
+      div.appendChild(add);
+      div.onclick=()=>openPostNew(k,dateObj);
+      grid.appendChild(div);
     }
   }
 
   function openPostNew(k,d){
-    editingPost=null;editDayKey=k;
+    editingPost=null; editDayKey=k;
     document.getElementById('mp-title').textContent=`Novo post — ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-    document.getElementById('mp-tema').value='';document.getElementById('mp-data').value=k;
-    document.getElementById('mp-status').value='s-aprovacao-kaka';document.getElementById('mp-formato').value='Reels';
-    document.getElementById('mp-musica').value='';document.getElementById('mp-legenda').value='';
-    setLinkDisplay('mp','',false);setLinkDisplay('mp','',true);
+    document.getElementById('mp-tema').value=''; document.getElementById('mp-data').value=k;
+    document.getElementById('mp-status').value='s-aprovacao-kaka'; document.getElementById('mp-formato').value='Reels';
+    document.getElementById('mp-musica').value=''; document.getElementById('mp-legenda').value='';
+    setLinkDisplay('mp','',false); setLinkDisplay('mp','',true);
     document.getElementById('mp-btn-delete').style.display='none';
+    document.getElementById('mp-btn-from-idea').style.display='block';
     document.getElementById('modal-post').style.display='flex';
     setTimeout(()=>document.getElementById('mp-tema').focus(),50);
   }
 
   function openPostEdit(k,id,p){
-    editingPost=id;editDayKey=k;
+    editingPost=id; editDayKey=k;
     const parts=k.split('-');
     document.getElementById('mp-title').textContent=`Editar post — ${parts[2]}/${parts[1]}/${parts[0]}`;
-    document.getElementById('mp-tema').value=p.tema||'';document.getElementById('mp-data').value=p.data||k;
-    document.getElementById('mp-status').value=p.status||'s-aprovacao-kaka';document.getElementById('mp-formato').value=p.formato||'Reels';
-    document.getElementById('mp-musica').value=p.musica||'';document.getElementById('mp-legenda').value=p.legenda||'';
-    setLinkDisplay('mp',p.link,false);setLinkDisplay('mp',p.ref,true);
+    document.getElementById('mp-tema').value=p.tema||''; document.getElementById('mp-data').value=p.data||k;
+    document.getElementById('mp-status').value=p.status||'s-aprovacao-kaka'; document.getElementById('mp-formato').value=p.formato||'Reels';
+    document.getElementById('mp-musica').value=p.musica||''; document.getElementById('mp-legenda').value=p.legenda||'';
+    setLinkDisplay('mp',p.link,false); setLinkDisplay('mp',p.ref,true);
     document.getElementById('mp-btn-delete').style.display='block';
+    document.getElementById('mp-btn-from-idea').style.display='block';
     document.getElementById('modal-post').style.display='flex';
   }
 
   async function savePost(){
     const newKey=document.getElementById('mp-data').value||editDayKey;
-    const p={tema:document.getElementById('mp-tema').value,status:document.getElementById('mp-status').value,
-      formato:document.getElementById('mp-formato').value,musica:document.getElementById('mp-musica').value,
-      legenda:document.getElementById('mp-legenda').value,link:document.getElementById('mp-link').value,
-      ref:document.getElementById('mp-ref').value,data:newKey};
+    const p={
+      tema:    document.getElementById('mp-tema').value,
+      status:  document.getElementById('mp-status').value,
+      formato: document.getElementById('mp-formato').value,
+      musica:  document.getElementById('mp-musica').value,
+      legenda: document.getElementById('mp-legenda').value,
+      link:    document.getElementById('mp-link').value,
+      ref:     document.getElementById('mp-ref').value,
+      data:    newKey,
+    };
     const id=editingPost||Date.now().toString();
     try{
-      if(editingPost&&newKey!==editDayKey){await set(ref(db,`posts/${newKey}/${id}`),p);await remove(ref(db,`posts/${editDayKey}/${id}`));}
-      else{await set(ref(db,`posts/${newKey}/${id}`),p);}
+      if(editingPost&&newKey!==editDayKey){
+        await set(ref(db,`posts/${newKey}/${id}`),p);
+        await remove(ref(db,`posts/${editDayKey}/${id}`));
+      } else { await set(ref(db,`posts/${newKey}/${id}`),p); }
       closeModal('modal-post');
     }catch(e){setStatus('Erro ao salvar.',true);}
   }
@@ -488,7 +562,62 @@
     catch(e){setStatus('Erro ao excluir.',true);}
   }
 
-  let ideas={}, editingIdea=null, currentIdeasTab='reels';
+  // ── PICK IDEA FROM CALENDAR ──
+  function openPickIdea(){
+    const d=document.getElementById('mp-data').value;
+    document.getElementById('pick-sub').textContent=`Escolha uma ideia do banco para o dia ${d?d.split('-').reverse().join('/'):'selecionado'}`;
+    document.getElementById('pick-search').value='';
+    renderPickIdeas();
+    document.getElementById('modal-pick-idea').style.display='flex';
+  }
+
+  function renderPickIdeas(){
+    const q=document.getElementById('pick-search').value.toLowerCase();
+    const list=document.getElementById('pick-idea-list');
+    list.innerHTML='';
+    const available=Object.entries(ideas).filter(([,i])=>!i.used);
+    const filtered=available.filter(([,i])=>!q||(i.tema||'').toLowerCase().includes(q));
+    if(!filtered.length){
+      list.innerHTML='<div class="pick-idea-empty">Nenhuma ideia disponível</div>'; return;
+    }
+    filtered.sort((a,b)=>b[0]-a[0]).forEach(([id,idea])=>{
+      const si=getStatusInfo(idea.tipo||'reels',idea.status);
+      const div=document.createElement('div'); div.className='pick-idea-item';
+      div.innerHTML=`
+        <span class="pi-tipo">${idea.tipo==='carrossel'?'🎠':'🎬'}</span>
+        <span class="pi-tema">${idea.tema||'(sem título)'}</span>
+        <span class="pi-badge" style="background:${si.c}22;color:${si.c}">${si.l}</span>
+      `;
+      div.onclick=()=>applyIdeaToPost(id,idea);
+      list.appendChild(div);
+    });
+  }
+
+  function applyIdeaToPost(id,idea){
+    document.getElementById('mp-tema').value=idea.tema||'';
+    document.getElementById('mp-formato').value=idea.tipo==='carrossel'?'Carrossel':'Reels';
+    document.getElementById('mp-legenda').value=idea.legenda||'';
+    setLinkDisplay('mp',idea.link,false);
+    setLinkDisplay('mp',idea.ref,true);
+    document.getElementById('mp-musica').value='';
+    closeModal('modal-pick-idea');
+    // highlight the idea ID so we can mark as used on save
+    document.getElementById('modal-post').dataset.ideaId=id;
+  }
+
+  // override savePost to also mark idea as used if came from pick
+  const _origSavePost=savePost;
+  window.savePost=async function(){
+    const ideaId=document.getElementById('modal-post').dataset.ideaId;
+    await _origSavePost();
+    if(ideaId){
+      try{ await update(ref(db,`ideas/${ideaId}`),{used:true}); }catch(_){}
+      delete document.getElementById('modal-post').dataset.ideaId;
+    }
+  };
+
+  // ── IDEAS ──
+  let ideas={}, editingIdea=null, schedulingIdeaId=null, currentIdeasTab='reels';
 
   onValue(ref(db,'ideas'),snap=>{ideas=snap.val()||{};renderIdeas();});
 
@@ -496,7 +625,7 @@
     const fr=document.getElementById('filter-reels').value;
     const fc=document.getElementById('filter-carrossel').value;
     const lr=document.getElementById('list-reels'),lc=document.getElementById('list-carrossel'),lu=document.getElementById('list-used');
-    lr.innerHTML='';lc.innerHTML='';lu.innerHTML='';
+    lr.innerHTML=''; lc.innerHTML=''; lu.innerHTML='';
     let cr=0,cc=0,cu=0,crF=0,ccF=0;
     Object.entries(ideas).sort((a,b)=>b[0]-a[0]).forEach(([id,idea])=>{
       if(idea.used){lu.appendChild(buildIdeaEl(id,idea));cu++;return;}
@@ -519,23 +648,63 @@
   }
 
   function buildIdeaEl(id,idea){
-    const div=document.createElement('div');div.className='idea-item'+(idea.used?' used':'');
+    const div=document.createElement('div'); div.className='idea-item'+(idea.used?' used':'');
     const si=getStatusInfo(idea.tipo||'reels',idea.status||'ideia-a-executar');
+    const actionsHtml=!idea.used
+      ?`<button class="btn-schedule-idea" onclick="event.stopPropagation();openScheduleIdeaById('${id}')" title="Agendar no calendário">📅</button>`
+      :'';
     div.innerHTML=`
       <div class="idea-info"><div class="idea-tema">${idea.tema||'(sem título)'}</div></div>
       <span class="idea-status-badge" style="background:${si.c}22;color:${si.c}">${si.l}</span>
       ${idea.link?`<a class="idea-link-icon" href="${idea.link}" target="_blank" onclick="event.stopPropagation()" title="Abrir design">🔗</a>`:''}
       ${idea.ref?`<a class="idea-link-icon" href="${idea.ref}" target="_blank" onclick="event.stopPropagation()" title="Abrir referência">📎</a>`:''}
+      ${actionsHtml}
     `;
-    div.onclick=()=>openIdeaEdit(id,idea);return div;
+    div.onclick=()=>openIdeaEdit(id,idea);
+    return div;
+  }
+
+  function openScheduleIdeaById(id){
+    schedulingIdeaId=id;
+    const idea=ideas[id];
+    document.getElementById('sch-sub').textContent=`Ideia: "${idea?.tema||'(sem título)'}"`;
+    document.getElementById('sch-data').value=new Date().toISOString().split('T')[0];
+    document.getElementById('sch-status').value='s-aprovacao-kaka';
+    document.getElementById('modal-schedule').style.display='flex';
+  }
+
+  async function confirmScheduleIdea(){
+    const idea=ideas[schedulingIdeaId];
+    if(!idea)return;
+    const k=document.getElementById('sch-data').value;
+    if(!k){alert('Selecione uma data.');return;}
+    const p={
+      tema:    idea.tema||'',
+      status:  document.getElementById('sch-status').value,
+      formato: idea.tipo==='carrossel'?'Carrossel':'Reels',
+      musica:  '',
+      legenda: idea.legenda||'',
+      link:    idea.link||'',
+      ref:     idea.ref||'',
+      data:    k,
+    };
+    const id=Date.now().toString();
+    try{
+      await set(ref(db,`posts/${k}/${id}`),p);
+      await update(ref(db,`ideas/${schedulingIdeaId}`),{used:true});
+      closeModal('modal-schedule');
+      closeModal('modal-idea');
+      setStatus('✓ Agendado no calendário!');
+      setTimeout(()=>setStatus(''),2500);
+    }catch(e){alert('Erro ao agendar.');}
   }
 
   function updateIdeaStatusOptions(){
     const tipo=document.getElementById('mi-tipo').value;
-    const sel=document.getElementById('mi-status');const cur=sel.value;sel.innerHTML='';
+    const sel=document.getElementById('mi-status'); const cur=sel.value; sel.innerHTML='';
     getStatusList(tipo).forEach(s=>{
-      const o=document.createElement('option');o.value=s.v;o.textContent=s.l;
-      if(s.v===cur)o.selected=true;sel.appendChild(o);
+      const o=document.createElement('option'); o.value=s.v; o.textContent=s.l;
+      if(s.v===cur)o.selected=true; sel.appendChild(o);
     });
   }
   window.updateIdeaStatusOptions=updateIdeaStatusOptions;
@@ -545,12 +714,13 @@
     document.getElementById('mi-title').textContent='Nova ideia';
     document.getElementById('mi-tema').value='';
     const tipo=currentIdeasTab==='carrossel'?'carrossel':'reels';
-    document.getElementById('mi-tipo').value=tipo;updateIdeaStatusOptions();
+    document.getElementById('mi-tipo').value=tipo; updateIdeaStatusOptions();
     document.getElementById('mi-status').value=getStatusList(tipo)[0].v;
-    document.getElementById('mi-texto').value='';document.getElementById('mi-legenda').value='';
-    setLinkDisplay('mi','',false);setLinkDisplay('mi','',true);
+    document.getElementById('mi-texto').value=''; document.getElementById('mi-legenda').value='';
+    setLinkDisplay('mi','',false); setLinkDisplay('mi','',true);
     document.getElementById('mi-btn-delete').style.display='none';
     document.getElementById('mi-btn-used').style.display='none';
+    document.getElementById('mi-btn-schedule').style.display='none';
     document.getElementById('modal-idea').style.display='flex';
     setTimeout(()=>document.getElementById('mi-tema').focus(),50);
   }
@@ -559,21 +729,34 @@
     editingIdea=id;
     document.getElementById('mi-title').textContent='Editar ideia';
     document.getElementById('mi-tema').value=idea.tema||'';
-    document.getElementById('mi-tipo').value=idea.tipo||'reels';updateIdeaStatusOptions();
+    document.getElementById('mi-tipo').value=idea.tipo||'reels'; updateIdeaStatusOptions();
     document.getElementById('mi-status').value=idea.status||'ideia-a-executar';
-    document.getElementById('mi-texto').value=idea.texto||'';document.getElementById('mi-legenda').value=idea.legenda||'';
-    setLinkDisplay('mi',idea.link,false);setLinkDisplay('mi',idea.ref,true);
+    document.getElementById('mi-texto').value=idea.texto||''; document.getElementById('mi-legenda').value=idea.legenda||'';
+    setLinkDisplay('mi',idea.link,false); setLinkDisplay('mi',idea.ref,true);
     document.getElementById('mi-btn-delete').style.display='block';
-    const ub=document.getElementById('mi-btn-used');ub.style.display='block';
+    const ub=document.getElementById('mi-btn-used'); ub.style.display='block';
     ub.textContent=idea.used?'Mover para não utilizada':'Marcar como utilizada';
+    const sb=document.getElementById('mi-btn-schedule');
+    sb.style.display=idea.used?'none':'block';
     document.getElementById('modal-idea').style.display='flex';
   }
 
+  function openScheduleIdea(){
+    if(!editingIdea)return;
+    openScheduleIdeaById(editingIdea);
+  }
+
   async function saveIdea(){
-    const idea={tema:document.getElementById('mi-tema').value,tipo:document.getElementById('mi-tipo').value,
-      status:document.getElementById('mi-status').value,texto:document.getElementById('mi-texto').value,
-      legenda:document.getElementById('mi-legenda').value,link:document.getElementById('mi-link').value,
-      ref:document.getElementById('mi-ref').value,used:editingIdea?(ideas[editingIdea]?.used||false):false};
+    const idea={
+      tema:    document.getElementById('mi-tema').value,
+      tipo:    document.getElementById('mi-tipo').value,
+      status:  document.getElementById('mi-status').value,
+      texto:   document.getElementById('mi-texto').value,
+      legenda: document.getElementById('mi-legenda').value,
+      link:    document.getElementById('mi-link').value,
+      ref:     document.getElementById('mi-ref').value,
+      used:    editingIdea?(ideas[editingIdea]?.used||false):false,
+    };
     const id=editingIdea||Date.now().toString();
     try{await set(ref(db,`ideas/${id}`),idea);closeModal('modal-idea');}
     catch(e){alert('Erro ao salvar.');}
@@ -591,7 +774,7 @@
   }
 
   function clearFilter(tipo){
-    document.getElementById('filter-'+tipo).value='';renderIdeas();
+    document.getElementById('filter-'+tipo).value=''; renderIdeas();
   }
 
   function switchIdeasTab(tab){
@@ -603,9 +786,9 @@
     document.getElementById('btn-add-idea').style.display=tab==='used'?'none':'block';
   }
 
-  function closeModal(id){document.getElementById(id).style.display='none';}
-  function changeMonth(d){cur=new Date(cur.getFullYear(),cur.getMonth()+d,1);renderCal();}
-  function goToday(){cur=new Date();renderCal();}
+  function closeModal(id){ document.getElementById(id).style.display='none'; }
+  function changeMonth(d){ cur=new Date(cur.getFullYear(),cur.getMonth()+d,1); renderCal(); }
+  function goToday(){ cur=new Date(); renderCal(); }
 
   function switchTab(tab){
     document.getElementById('tab-calendar').classList.toggle('active',tab==='calendar');
@@ -614,18 +797,25 @@
     document.getElementById('page-ideas').classList.toggle('active',tab==='ideas');
   }
 
-  [document.getElementById('modal-post'),document.getElementById('modal-idea')].forEach(m=>{
+  document.querySelectorAll('.modal-bg').forEach(m=>{
     m.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});
   });
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('modal-post');closeModal('modal-idea');}});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){
+      closeModal('modal-post');closeModal('modal-idea');
+      closeModal('modal-schedule');closeModal('modal-pick-idea');
+    }
+  });
 
-  window.changeMonth=changeMonth;window.goToday=goToday;
-  window.savePost=savePost;window.deletePost=deletePost;
-  window.saveIdea=saveIdea;window.deleteIdea=deleteIdea;
-  window.toggleIdeaUsed=toggleIdeaUsed;window.openIdeaNew=openIdeaNew;
-  window.switchTab=switchTab;window.closeModal=closeModal;
-  window.switchIdeasTab=switchIdeasTab;window.clearFilter=clearFilter;
-  window.renderIdeas=renderIdeas;
+  window.changeMonth=changeMonth; window.goToday=goToday;
+  window.savePost=savePost; window.deletePost=deletePost;
+  window.saveIdea=saveIdea; window.deleteIdea=deleteIdea;
+  window.toggleIdeaUsed=toggleIdeaUsed; window.openIdeaNew=openIdeaNew;
+  window.switchTab=switchTab; window.closeModal=closeModal;
+  window.switchIdeasTab=switchIdeasTab; window.clearFilter=clearFilter;
+  window.renderIdeas=renderIdeas; window.renderPickIdeas=renderPickIdeas;
+  window.openPickIdea=openPickIdea; window.confirmScheduleIdea=confirmScheduleIdea;
+  window.openScheduleIdea=openScheduleIdea; window.openScheduleIdeaById=openScheduleIdeaById;
 </script>
 </body>
 </html>
