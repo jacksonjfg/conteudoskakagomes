@@ -78,6 +78,8 @@
   .filter-clear { font-size: 12px; color: #6C3FC5; cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; }
   .filter-count { font-size: 12px; color: #aaa; }
 
+  .doc-roteiro-bar { display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #e5e2db;border-radius:10px;padding:10px 14px;margin-bottom:10px; }
+
   .ideas-box { background: #fff; border: 1px solid #e5e2db; border-radius: 12px; overflow: hidden; }
   .ideas-box-header { padding: 12px 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0ede8; }
   .ideas-box-header.nao-utilizado { color: #6C3FC5; background: #faf8ff; }
@@ -218,6 +220,13 @@
         </select>
         <button class="filter-clear" onclick="clearFilter('reels')">Limpar</button>
         <span class="filter-count" id="filter-count-reels"></span>
+      </div>
+      <div class="doc-roteiro-bar" id="doc-roteiro-bar">
+        <span style="font-size:13px;font-weight:500;color:#1a1a1a">📄 Documento de Roteiros</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <a id="doc-roteiro-link" href="#" target="_blank" style="display:none;font-size:12px;color:#6C3FC5;text-decoration:underline">Abrir documento ↗</a>
+          <button onclick="editRoteiroDoc()" style="font-size:12px;background:none;border:1px solid #e0ddd6;border-radius:6px;padding:4px 10px;cursor:pointer;color:#555">✏️ Editar link</button>
+        </div>
       </div>
       <div class="ideas-box">
         <div class="ideas-box-header nao-utilizado">Ideias de Reels <span class="idea-count" id="count-reels">0</span></div>
@@ -803,6 +812,26 @@
     catch(e){alert('Erro ao excluir.');}
   }
 
+  function editRoteiroDoc(){
+    const current = localStorage.getItem('roteiro-doc-link')||'';
+    const url = prompt('Cole o link do documento de roteiros:', current);
+    if(url===null) return;
+    if(url.trim()){
+      localStorage.setItem('roteiro-doc-link', url.trim());
+    } else {
+      localStorage.removeItem('roteiro-doc-link');
+    }
+    loadRoteiroDoc();
+  }
+
+  function loadRoteiroDoc(){
+    const url = localStorage.getItem('roteiro-doc-link');
+    const link = document.getElementById('doc-roteiro-link');
+    if(url){ link.href=url; link.style.display='inline'; }
+    else { link.style.display='none'; }
+  }
+  loadRoteiroDoc();
+
   function clearFilter(tipo){
     document.getElementById('filter-'+tipo).value='';
     document.getElementById('sort-'+tipo).value='recente';
@@ -848,6 +877,7 @@
   window.renderIdeas=renderIdeas; window.renderPickIdeas=renderPickIdeas;
   window.openPickIdea=openPickIdea; window.confirmScheduleIdea=confirmScheduleIdea;
   window.openScheduleIdea=openScheduleIdea; window.openScheduleIdeaById=openScheduleIdeaById;
+  window.editRoteiroDoc=editRoteiroDoc;
 </script>
 </body>
 </html>
