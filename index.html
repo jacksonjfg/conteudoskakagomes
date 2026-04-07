@@ -208,8 +208,14 @@
 
     <div class="ideas-panel active" id="panel-reels">
       <div class="filter-bar">
-        <label>Filtrar por status:</label>
+        <label>Filtrar:</label>
         <select class="filter-select" id="filter-reels" onchange="renderIdeas()"><option value="">Todos</option></select>
+        <label style="margin-left:8px">Ordenar:</label>
+        <select class="filter-select" id="sort-reels" onchange="renderIdeas()">
+          <option value="recente">Mais recente</option>
+          <option value="status">Por status</option>
+          <option value="az">A → Z</option>
+        </select>
         <button class="filter-clear" onclick="clearFilter('reels')">Limpar</button>
         <span class="filter-count" id="filter-count-reels"></span>
       </div>
@@ -221,8 +227,14 @@
 
     <div class="ideas-panel" id="panel-carrossel">
       <div class="filter-bar">
-        <label>Filtrar por status:</label>
+        <label>Filtrar:</label>
         <select class="filter-select" id="filter-carrossel" onchange="renderIdeas()"><option value="">Todos</option></select>
+        <label style="margin-left:8px">Ordenar:</label>
+        <select class="filter-select" id="sort-carrossel" onchange="renderIdeas()">
+          <option value="recente">Mais recente</option>
+          <option value="status">Por status</option>
+          <option value="az">A → Z</option>
+        </select>
         <button class="filter-clear" onclick="clearFilter('carrossel')">Limpar</button>
         <span class="filter-count" id="filter-count-carrossel"></span>
       </div>
@@ -601,42 +613,59 @@
     setLinkDisplay('mp',idea.ref,true);
     document.getElementById('mp-musica').value='';
     closeModal('modal-pick-idea');
-    // highlight the idea ID so we can mark as used on save
-    document.getElementById('modal-post').dataset.ideaId=id;
   }
 
-  // override savePost to also mark idea as used if came from pick
-  const _origSavePost=savePost;
-  window.savePost=async function(){
-    const ideaId=document.getElementById('modal-post').dataset.ideaId;
-    await _origSavePost();
-    if(ideaId){
-      try{ await update(ref(db,`ideas/${ideaId}`),{used:true}); }catch(_){}
-      delete document.getElementById('modal-post').dataset.ideaId;
-    }
-  };
+  // savePost — no longer auto-marks idea as used
+  window.savePost=savePost;
 
   // ── IDEAS ──
   let ideas={}, editingIdea=null, schedulingIdeaId=null, currentIdeasTab='reels';
 
   onValue(ref(db,'ideas'),snap=>{ideas=snap.val()||{};renderIdeas();});
 
+  function sortIdeas(entries, tipo, sortVal){
+    const statusOrder = getStatusList(tipo).map(s=>s.v);
+    if(sortVal==='status'){
+      return [...entries].sort((a,b)=>{
+        const ia=statusOrder.indexOf(a[1].status||'');
+        const ib=statusOrder.indexOf(b[1].status||'');
+        return (ia===-1?999:ia)-(ib===-1?999:ib);
+      });
+    }
+    if(sortVal==='az'){
+      return [...entries].sort((a,b)=>(a[1].tema||'').localeCompare(b[1].tema||'','pt'));
+    }
+    // default: recente (newest first by key)
+    return [...entries].sort((a,b)=>b[0]-a[0]);
+  }
+
   function renderIdeas(){
     const fr=document.getElementById('filter-reels').value;
     const fc=document.getElementById('filter-carrossel').value;
+    const sr=document.getElementById('sort-reels').value;
+    const sc=document.getElementById('sort-carrossel').value;
     const lr=document.getElementById('list-reels'),lc=document.getElementById('list-carrossel'),lu=document.getElementById('list-used');
     lr.innerHTML=''; lc.innerHTML=''; lu.innerHTML='';
     let cr=0,cc=0,cu=0,crF=0,ccF=0;
-    Object.entries(ideas).sort((a,b)=>b[0]-a[0]).forEach(([id,idea])=>{
-      if(idea.used){lu.appendChild(buildIdeaEl(id,idea));cu++;return;}
-      if(idea.tipo==='carrossel'){
-        cc++;
-        if(!fc||idea.status===fc){lc.appendChild(buildIdeaEl(id,idea));ccF++;}
-      } else {
-        cr++;
-        if(!fr||idea.status===fr){lr.appendChild(buildIdeaEl(id,idea));crF++;}
-      }
+
+    const allEntries=Object.entries(ideas);
+    // used goes to used panel always sorted by recency
+    allEntries.sort((a,b)=>b[0]-a[0]).forEach(([id,idea])=>{
+      if(idea.used){lu.appendChild(buildIdeaEl(id,idea));cu++;}
     });
+
+    const reelEntries=allEntries.filter(([,i])=>!i.used&&i.tipo!=='carrossel');
+    const carrEntries=allEntries.filter(([,i])=>!i.used&&i.tipo==='carrossel');
+
+    sortIdeas(reelEntries,'reels',sr).forEach(([id,idea])=>{
+      cr++;
+      if(!fr||idea.status===fr){lr.appendChild(buildIdeaEl(id,idea));crF++;}
+    });
+    sortIdeas(carrEntries,'carrossel',sc).forEach(([id,idea])=>{
+      cc++;
+      if(!fc||idea.status===fc){lc.appendChild(buildIdeaEl(id,idea));ccF++;}
+    });
+
     if(!lr.children.length)lr.innerHTML=`<div class="ideas-empty">${fr?'Nenhuma ideia com esse status':'Nenhuma ideia de Reels ainda'}</div>`;
     if(!lc.children.length)lc.innerHTML=`<div class="ideas-empty">${fc?'Nenhuma ideia com esse status':'Nenhuma ideia de Carrossel ainda'}</div>`;
     if(!lu.children.length)lu.innerHTML='<div class="ideas-empty">Nenhuma ideia utilizada</div>';
@@ -691,7 +720,6 @@
     const id=Date.now().toString();
     try{
       await set(ref(db,`posts/${k}/${id}`),p);
-      await update(ref(db,`ideas/${schedulingIdeaId}`),{used:true});
       closeModal('modal-schedule');
       closeModal('modal-idea');
       setStatus('✓ Agendado no calendário!');
@@ -747,15 +775,17 @@
   }
 
   async function saveIdea(){
+    const novoStatus = document.getElementById('mi-status').value;
     const idea={
       tema:    document.getElementById('mi-tema').value,
       tipo:    document.getElementById('mi-tipo').value,
-      status:  document.getElementById('mi-status').value,
+      status:  novoStatus,
       texto:   document.getElementById('mi-texto').value,
       legenda: document.getElementById('mi-legenda').value,
       link:    document.getElementById('mi-link').value,
       ref:     document.getElementById('mi-ref').value,
-      used:    editingIdea?(ideas[editingIdea]?.used||false):false,
+      // auto-mark used when status is postado; preserve existing used state otherwise
+      used:    novoStatus==='postado' ? true : (editingIdea?(ideas[editingIdea]?.used||false):false),
     };
     const id=editingIdea||Date.now().toString();
     try{await set(ref(db,`ideas/${id}`),idea);closeModal('modal-idea');}
@@ -774,7 +804,9 @@
   }
 
   function clearFilter(tipo){
-    document.getElementById('filter-'+tipo).value=''; renderIdeas();
+    document.getElementById('filter-'+tipo).value='';
+    document.getElementById('sort-'+tipo).value='recente';
+    renderIdeas();
   }
 
   function switchIdeasTab(tab){
