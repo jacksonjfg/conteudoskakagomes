@@ -80,6 +80,7 @@
   #page-ideas .ideas-panel { display: block; }
   .ideas-board { display: grid; grid-template-columns: repeat(6, minmax(230px, 1fr)); gap: 12px; align-items: start; overflow-x: auto; padding-bottom: 10px; }
   .kanban-column { background: #fff; border: 1px solid #ebe4d7; border-radius: 12px; overflow: hidden; box-shadow: 0 14px 34px rgba(20,33,61,.07); min-height: 320px; }
+  .kanban-column.drag-over { border-color: #f4b95d; background: #fffaf2; }
   .kanban-header { padding: 13px 14px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0ede8; color: #18202b; }
   .kanban-header span:first-child { display: flex; align-items: center; gap: 7px; }
   .kanban-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
@@ -107,16 +108,16 @@
   .ideas-list { padding: 10px; min-height: 120px; }
   .idea-item { display: block; padding: 12px; border-radius: 8px; cursor: pointer; border: 1px solid #e7e2d8; margin-bottom: 8px; transition: background .1s, border-color .1s, transform .1s; background: #f8f8fb; }
   .idea-item:hover { background: #fffaf2; border-color: #f4b95d; transform: translateY(-1px); }
+  .idea-item.dragging { opacity: .45; }
   .idea-item.used { opacity: .5; }
   .idea-info { min-width: 0; }
   .idea-tema { font-size: 14px; font-weight: 750; line-height: 1.35; margin-bottom: 9px; color: #101828; }
-  .idea-preview { color: #8b86a3; font-size: 12px; line-height: 1.45; margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .idea-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 7px; }
   .idea-status-badge, .idea-type-badge { font-size: 10px; font-weight: 700; border-radius: 999px; padding: 3px 7px; white-space: nowrap; flex-shrink: 0; }
   .idea-type-badge { background: #fff; color: #667085; border: 1px solid #ebe4d7; }
   .idea-actions { display: flex; gap: 4px; flex-shrink: 0; margin-top: 10px; }
-  .idea-link-icon { font-size: 15px; flex-shrink: 0; text-decoration: none; color: #9CA3AF; }
-  .idea-link-icon:hover { color: #6C3FC5; }
+  .idea-link-icon { font-size: 11px; flex-shrink: 0; text-decoration: none; color: #14213d; border: 1px solid #d6cfbf; background: #fff; border-radius: 7px; padding: 5px 8px; font-weight: 700; }
+  .idea-link-icon:hover { color: #14213d; border-color: #f4b95d; background: #fffaf2; }
   .btn-schedule-idea { font-size: 10px; background: #6C3FC5; color: #fff; border: none; border-radius: 5px; padding: 3px 7px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
   .btn-schedule-idea:hover { opacity: .85; }
   .ideas-empty { text-align: center; color: #bbb; font-size: 13px; padding: 2rem 1rem; }
@@ -145,6 +146,7 @@
   .autosave-state { font-size: 12px; color: #d9e2ef; margin-top: 6px; }
   .idea-editor-body { padding: 22px 24px; max-height: calc(92vh - 92px); overflow-y: auto; }
   .idea-editor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .idea-editor-grid.three { grid-template-columns: 1fr 1fr 1fr; }
   .idea-editor-grid .wide { grid-column: 1 / -1; }
   .field-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; }
   .copy-btn { border: 1px solid #d6cfbf; background: #fffaf2; color: #14213d; border-radius: 7px; padding: 5px 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
@@ -177,6 +179,7 @@
   @media(max-width:820px){
     .ideas-board { grid-template-columns: repeat(6, minmax(240px, 1fr)); }
     .idea-editor-grid { grid-template-columns: 1fr; }
+    .idea-editor-grid.three { grid-template-columns: 1fr; }
   }
 
   @media(max-width:600px){
@@ -262,44 +265,72 @@
 
 <!-- MODAL: POST (calendar) -->
 <div class="modal-bg" id="modal-post" style="display:none">
-  <div class="modal">
-    <h3 id="mp-title">Novo post</h3>
-    <label>Tema / Título</label>
-    <input type="text" id="mp-tema" placeholder="Ex: 3 erros que destroem seu alcance">
-    <label>Data de Publicação</label>
-    <input type="date" id="mp-data">
-    <label>Status</label>
-    <select id="mp-status">
-      <option value="ideia">IDEIA</option>
-      <option value="gravacao-kaka">GRAVAÇÃO KAKÁ</option>
-      <option value="design">DESIGN</option>
-      <option value="editando">EDITANDO</option>
-      <option value="aprovacao-kaka">APROVAÇÃO KAKÁ</option>
-      <option value="postado">POSTADO</option>
-    </select>
-    <label>Formato</label>
-    <select id="mp-formato">
-      <option>Reels</option><option>Carrossel</option><option>Feed (estático)</option><option>Story</option>
-    </select>
-    <label>Música do Post</label>
-    <input type="text" id="mp-musica" placeholder="Ex: Beyoncé - Texas Hold Em">
-    <label>Legenda</label>
-    <textarea class="tall" id="mp-legenda" placeholder="Cole aqui a legenda do post..."></textarea>
-    <label>Link Canva / Drive</label>
-    <input type="url" id="mp-link" placeholder="https://..." oninput="updateLP('mp')">
-    <div class="link-display" id="mp-link-display" style="display:none">
-      <span style="font-size:11px;color:#aaa">→</span><a id="mp-link-anchor" href="#" target="_blank">Abrir link ↗</a>
+  <div class="modal idea-modal">
+    <div class="idea-editor-head">
+      <div>
+        <h3 id="mp-title">Novo post</h3>
+        <div class="autosave-state" id="mp-save-state">Salvo automaticamente</div>
+      </div>
+      <button class="btn-cancel" onclick="closeModal('modal-post')">Fechar</button>
     </div>
-    <label>Link de Referência</label>
-    <input type="url" id="mp-ref" placeholder="https://..." oninput="updateLP('mp-ref')">
-    <div class="link-display" id="mp-ref-display" style="display:none">
-      <span style="font-size:11px;color:#aaa">→</span><a id="mp-ref-anchor" href="#" target="_blank">Abrir referência ↗</a>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-delete" id="mp-btn-delete" onclick="deletePost()" style="display:none">Excluir</button>
-      <button class="btn-from-idea" onclick="openPickIdea()" id="mp-btn-from-idea">💡 Usar ideia do banco</button>
-      <button class="btn-cancel" onclick="closeModal('modal-post')">Cancelar</button>
-      <button class="btn-save" onclick="savePost()">Salvar</button>
+    <div class="idea-editor-body">
+      <div class="idea-editor-grid three">
+        <div class="wide">
+          <label>Tema / Título</label>
+          <input type="text" id="mp-tema" placeholder="Ex: 3 erros que destroem seu alcance">
+        </div>
+        <div>
+          <label>Data de Publicação</label>
+          <input type="date" id="mp-data">
+        </div>
+        <div>
+          <label>Status</label>
+          <select id="mp-status">
+            <option value="ideia">IDEIA</option>
+            <option value="gravacao-kaka">GRAVAÇÃO KAKÁ</option>
+            <option value="design">DESIGN</option>
+            <option value="editando">EDITANDO</option>
+            <option value="aprovacao-kaka">APROVAÇÃO KAKÁ</option>
+            <option value="postado">POSTADO</option>
+          </select>
+        </div>
+        <div>
+          <label>Formato</label>
+          <select id="mp-formato">
+            <option>Reels</option><option>Carrossel</option><option>Feed (estático)</option><option>Story</option>
+          </select>
+        </div>
+        <div class="wide">
+          <label>Música do Post</label>
+          <input type="text" id="mp-musica" placeholder="Ex: Beyoncé - Texas Hold Em">
+        </div>
+        <div class="wide">
+          <div class="field-row">
+            <label style="margin-top:0">Legenda</label>
+            <button class="copy-btn" onclick="copyPostLegenda()" type="button">Copiar</button>
+          </div>
+          <textarea class="tall" id="mp-legenda" placeholder="Cole aqui a legenda do post..."></textarea>
+        </div>
+        <div>
+          <label>Link Canva / Drive</label>
+          <input type="url" id="mp-link" placeholder="https://..." oninput="updateLP('mp'); autoSavePostDebounced();">
+          <div class="link-display" id="mp-link-display" style="display:none">
+            <span style="font-size:11px;color:#aaa">→</span><a id="mp-link-anchor" href="#" target="_blank">Abrir link ↗</a>
+          </div>
+        </div>
+        <div>
+          <label>Link de Referência</label>
+          <input type="url" id="mp-ref" placeholder="https://..." oninput="updateLP('mp-ref'); autoSavePostDebounced();">
+          <div class="link-display" id="mp-ref-display" style="display:none">
+            <span style="font-size:11px;color:#aaa">→</span><a id="mp-ref-anchor" href="#" target="_blank">Abrir referência ↗</a>
+          </div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="modal-actions" style="margin-top:.75rem">
+        <button class="btn-delete" id="mp-btn-delete" onclick="deletePost()" style="display:none">Excluir</button>
+        <button class="btn-from-idea" onclick="openPickIdea()" id="mp-btn-from-idea">Usar ideia do banco</button>
+      </div>
     </div>
   </div>
 </div>
@@ -473,7 +504,7 @@
   }
 
   // ── CALENDAR ──
-  let posts={}, cur=new Date(), editingPost=null, editDayKey=null, dragData=null;
+  let posts={}, cur=new Date(), editingPost=null, editDayKey=null, dragData=null, autoSavePostTimer=null, postHydrating=false, skipPostAutosave=false;
 
   onValue(ref(db,'posts'),snap=>{
     posts=snap.val()||{}; renderCal();
@@ -550,6 +581,7 @@
   }
 
   function openPostNew(k,d){
+    postHydrating=true;
     editingPost=null; editDayKey=k;
     document.getElementById('mp-title').textContent=`Novo post — ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
     document.getElementById('mp-tema').value=''; document.getElementById('mp-data').value=k;
@@ -558,11 +590,14 @@
     setLinkDisplay('mp','',false); setLinkDisplay('mp','',true);
     document.getElementById('mp-btn-delete').style.display='none';
     document.getElementById('mp-btn-from-idea').style.display='block';
+    setPostAutoSaveState('Salvo automaticamente');
     document.getElementById('modal-post').style.display='flex';
+    postHydrating=false;
     setTimeout(()=>document.getElementById('mp-tema').focus(),50);
   }
 
   function openPostEdit(k,id,p){
+    postHydrating=true;
     editingPost=id; editDayKey=k;
     const parts=k.split('-');
     document.getElementById('mp-title').textContent=`Editar post — ${parts[2]}/${parts[1]}/${parts[0]}`;
@@ -572,12 +607,18 @@
     setLinkDisplay('mp',p.link,false); setLinkDisplay('mp',p.ref,true);
     document.getElementById('mp-btn-delete').style.display='block';
     document.getElementById('mp-btn-from-idea').style.display='block';
+    setPostAutoSaveState('Salvo automaticamente');
     document.getElementById('modal-post').style.display='flex';
+    postHydrating=false;
   }
 
-  async function savePost(){
+  function setPostAutoSaveState(text){
+    document.getElementById('mp-save-state').textContent=text;
+  }
+
+  function collectPostFromModal(){
     const newKey=document.getElementById('mp-data').value||editDayKey;
-    const p={
+    return {
       tema:    document.getElementById('mp-tema').value,
       status:  document.getElementById('mp-status').value,
       formato: document.getElementById('mp-formato').value,
@@ -587,20 +628,64 @@
       ref:     document.getElementById('mp-ref').value,
       data:    newKey,
     };
+  }
+
+  function hasPostContent(post){
+    return Boolean((post.tema||post.musica||post.legenda||post.link||post.ref||'').trim());
+  }
+
+  function autoSavePostDebounced(){
+    if(postHydrating||document.getElementById('modal-post').style.display==='none')return;
+    setPostAutoSaveState('Salvando...');
+    clearTimeout(autoSavePostTimer);
+    autoSavePostTimer=setTimeout(savePost,550);
+  }
+
+  async function savePost(){
+    if(postHydrating||document.getElementById('modal-post').style.display==='none')return;
+    const p=collectPostFromModal();
+    const newKey=document.getElementById('mp-data').value||editDayKey;
+    if(!hasPostContent(p)){
+      setPostAutoSaveState('Comece a escrever para salvar');
+      return;
+    }
     const id=editingPost||Date.now().toString();
     try{
       if(editingPost&&newKey!==editDayKey){
         await set(ref(db,`posts/${newKey}/${id}`),p);
         await remove(ref(db,`posts/${editDayKey}/${id}`));
       } else { await set(ref(db,`posts/${newKey}/${id}`),p); }
-      closeModal('modal-post');
+      editingPost=id;
+      editDayKey=newKey;
+      document.getElementById('mp-btn-delete').style.display='block';
+      setPostAutoSaveState('Salvo automaticamente');
     }catch(e){setStatus('Erro ao salvar.',true);}
   }
 
   async function deletePost(){
-    try{await remove(ref(db,`posts/${editDayKey}/${editingPost}`));closeModal('modal-post');}
+    try{if(editingPost)await remove(ref(db,`posts/${editDayKey}/${editingPost}`));skipPostAutosave=true;closeModal('modal-post');}
     catch(e){setStatus('Erro ao excluir.',true);}
   }
+
+  async function copyPostLegenda(){
+    const text=document.getElementById('mp-legenda').value;
+    try{
+      await navigator.clipboard.writeText(text);
+      setPostAutoSaveState('Legenda copiada');
+      setTimeout(()=>setPostAutoSaveState('Salvo automaticamente'),1400);
+    }catch(e){
+      document.getElementById('mp-legenda').select();
+      setPostAutoSaveState('Texto selecionado');
+    }
+  }
+
+  function wirePostAutosave(){
+    ['mp-tema','mp-data','mp-status','mp-formato','mp-musica','mp-legenda'].forEach(id=>{
+      document.getElementById(id).oninput=autoSavePostDebounced;
+      document.getElementById(id).onchange=autoSavePostDebounced;
+    });
+  }
+  wirePostAutosave();
 
   // ── PICK IDEA FROM CALENDAR ──
   function openPickIdea(){
@@ -640,6 +725,7 @@
     setLinkDisplay('mp',idea.link,false);
     setLinkDisplay('mp',idea.ref,true);
     document.getElementById('mp-musica').value='';
+    autoSavePostDebounced();
     closeModal('modal-pick-idea');
   }
 
@@ -667,6 +753,15 @@
         <div class="kanban-list" id="list-${status.v}"></div>
       `;
       board.appendChild(col);
+      const list=col.querySelector('.kanban-list');
+      list.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drag-over');});
+      list.addEventListener('dragleave',()=>col.classList.remove('drag-over'));
+      list.addEventListener('drop',e=>{
+        e.preventDefault();
+        col.classList.remove('drag-over');
+        const id=e.dataTransfer.getData('text/plain');
+        if(id)moveIdeaToStatus(id,status.v);
+      });
     });
 
     allEntries.forEach(([id,idea])=>{
@@ -691,12 +786,16 @@
 
   function buildIdeaEl(id,idea){
     const div=document.createElement('div'); div.className='idea-item'+(idea.used?' used':'');
+    div.draggable=true;
+    div.dataset.ideaId=id;
+    div.addEventListener('dragstart',e=>{
+      e.dataTransfer.setData('text/plain',id);
+      e.dataTransfer.effectAllowed='move';
+      div.classList.add('dragging');
+    });
+    div.addEventListener('dragend',()=>div.classList.remove('dragging'));
     const si=getStatusInfo(idea.status);
     const tipo=(idea.tipo==='carrossel')?'Carrossel':'Reels';
-    const preview=(idea.texto||idea.legenda||'Sem texto ou legenda ainda.').replace(/\s+/g,' ').trim();
-    const actionsHtml=!idea.used
-      ?`<button class="btn-schedule-idea" onclick="event.stopPropagation();openScheduleIdeaById('${id}')" title="Agendar no calendário">Agendar</button>`
-      :'';
     div.innerHTML=`
       <div class="idea-info">
         <div class="idea-tema">${idea.tema||'(sem título)'}</div>
@@ -704,16 +803,22 @@
           <span class="idea-status-badge" style="background:${si.c}22;color:${si.c}">${si.l}</span>
           <span class="idea-type-badge">${tipo}</span>
         </div>
-        <div class="idea-preview">${preview}</div>
       </div>
       <div class="idea-actions">
-        ${idea.link?`<a class="idea-link-icon" href="${idea.link}" target="_blank" onclick="event.stopPropagation()" title="Abrir design">🔗</a>`:''}
-        ${idea.ref?`<a class="idea-link-icon" href="${idea.ref}" target="_blank" onclick="event.stopPropagation()" title="Abrir referência">📎</a>`:''}
-        ${actionsHtml}
+        ${idea.link?`<a class="idea-link-icon" href="${idea.link}" target="_blank" onclick="event.stopPropagation()" title="Abrir Canva/Drive">Abrir Canva/Drive</a>`:''}
+        ${idea.ref?`<a class="idea-link-icon" href="${idea.ref}" target="_blank" onclick="event.stopPropagation()" title="Abrir referência">Referência</a>`:''}
       </div>
     `;
     div.onclick=()=>openIdeaEdit(id,idea);
     return div;
+  }
+
+  async function moveIdeaToStatus(id,status){
+    const idea=ideas[id];
+    if(!idea)return;
+    try{
+      await update(ref(db,`ideas/${id}`),{status,used:status==='postado'});
+    }catch(e){alert('Erro ao mover conteúdo.');}
   }
 
   function openScheduleIdeaById(id){
@@ -927,6 +1032,11 @@
   }
 
   function closeModal(id){
+    if(id==='modal-post'&&document.getElementById(id).style.display!=='none'&&!skipPostAutosave){
+      clearTimeout(autoSavePostTimer);
+      savePost();
+    }
+    if(id==='modal-post')skipPostAutosave=false;
     if(id==='modal-idea'&&document.getElementById(id).style.display!=='none'&&!skipIdeaAutosave){
       clearTimeout(autoSaveTimer);
       autoSaveIdeaNow();
@@ -956,6 +1066,7 @@
 
   window.changeMonth=changeMonth; window.goToday=goToday;
   window.savePost=savePost; window.deletePost=deletePost;
+  window.copyPostLegenda=copyPostLegenda; window.autoSavePostDebounced=autoSavePostDebounced;
   window.saveIdea=saveIdea; window.deleteIdea=deleteIdea;
   window.toggleIdeaUsed=toggleIdeaUsed; window.openIdeaNew=openIdeaNew;
   window.openIdeaNewFor=openIdeaNewFor; window.openIdeaNewAt=openIdeaNewAt;
@@ -965,6 +1076,7 @@
   window.renderIdeas=renderIdeas; window.renderPickIdeas=renderPickIdeas;
   window.openPickIdea=openPickIdea; window.confirmScheduleIdea=confirmScheduleIdea;
   window.openScheduleIdea=openScheduleIdea; window.openScheduleIdeaById=openScheduleIdeaById;
+  window.moveIdeaToStatus=moveIdeaToStatus;
   window.editRoteiroDoc=editRoteiroDoc;
 </script>
 </body>
